@@ -321,9 +321,9 @@ class CHSIE_Data_Display {
     */
     public function get_queries() {
 
-        $this->query_master_list = CDD_Queries::get_queries();
+        $this->queries = CDD_Queries::get_queries();
 
-        return $this->query_master_list;
+        return $this->queries;
     }
 
 
