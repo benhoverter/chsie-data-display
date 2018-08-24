@@ -1,0 +1,29 @@
+{
+  "name": "chsie-data-display",
+  "version": "1.0.0",
+  "description": "This plugin retrieves, displays, and exports data collected by the University of Washington's Center for Health Sciences Interprofessional Education, Research and Practice.",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "chsie",
+    "data"
+  ],
+  "author": "Ben Hoverter",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^5.0.0",
+    "gulp-babel": "^7.0.1",
+    "gulp-clean": "^0.4.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-csso": "^3.0.1",
+    "gulp-sass": "^4.0.1",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify": "^3.0.1",
+    "run-sequence": "^2.2.1"
+  }
+}

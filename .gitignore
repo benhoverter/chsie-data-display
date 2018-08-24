@@ -1,0 +1,12 @@
+# dependencies
+/node_modules
+
+# security
+/config
+
+# production
+*.min.*
+
+# misc
+.DS_Store
+npm-debug.log*
