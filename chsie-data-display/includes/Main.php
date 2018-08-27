@@ -147,6 +147,11 @@ class CHSIE_Data_Display {
         /**
         * The file responsible for defining the SQL queries run by the plugin.
         */
+        require_once plugin_dir_path( __DIR__ ) . 'config/Config.php';
+
+        /**
+        * The file responsible for defining the SQL queries run by the plugin.
+        */
         require_once plugin_dir_path( __DIR__ ) . 'config/Queries.php';
 
         $this->loader = new CDD_Loader();
@@ -283,7 +288,6 @@ class CHSIE_Data_Display {
             $config->db_name
         );
 
-        return $this->conn;
     }
 
 
@@ -297,7 +301,6 @@ class CHSIE_Data_Display {
 
         $this->queries = CDD_Queries::get_queries();
 
-        return $this->queries;
     }
 
 
