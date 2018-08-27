@@ -99,7 +99,6 @@ class CHSIE_Data_Display {
 
         $this->define_admin_hooks();  // Creates an instance of the admin class and hooks its methods in.
         $this->define_public_hooks(); // Creates an instance of the public class and hooks its methods in.
-        //$this->define_settings_hooks(); // Creates an instance of the admin settings class and hooks its methods in.
 
     }
 
@@ -126,34 +125,29 @@ class CHSIE_Data_Display {
         * The class responsible for orchestrating the actions and filters of the
         * core plugin.
         */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/Loader.php';
+        require_once plugin_dir_path( __DIR__ ) . 'includes/Loader.php';
 
         /**
         * The class responsible for defining internationalization functionality
         * of the plugin.
         */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/I18n.php';
+        require_once plugin_dir_path( __DIR__ ) . 'includes/I18n.php';
 
         /**
         * The class responsible for defining all actions that occur in the admin area.
         */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/Admin.php';
-
-        /**
-        * The class responsible for defining all admin settings and menu options.
-        */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/Settings.php';
+        require_once plugin_dir_path( __DIR__ ) . 'admin/Admin.php';
 
         /**
         * The class responsible for defining all actions that occur in the public-facing
         * side of the site.
         */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/Public.php';
+        require_once plugin_dir_path( __DIR__ ) . 'public/Public.php';
 
         /**
         * The file responsible for defining the SQL queries run by the plugin.
         */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'config/Queries.php';
+        require_once plugin_dir_path( __DIR__ ) . 'config/Queries.php';
 
         $this->loader = new CDD_Loader();
 
@@ -173,26 +167,6 @@ class CHSIE_Data_Display {
         $plugin_i18n = new CDD_i18n();
 
         $this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
-
-    }
-
-
-    /**
-    * Register all of the hooks related to the WeDevs Settings API functionality
-    * of the plugin.
-    *
-    * @since    1.0.0
-    * @access   private
-    */
-    private function define_settings_hooks() {
-
-        $plugin_settings = new CDD_Settings( $this->get_plugin_name(), $this->get_version() );
-
-        // No need to enqueue scripts/styles here -- they are enqueued in the WeDevs_Settings_API class.
-
-        // Standard functions that call dev-defined sections and menus in the Settings class:
-        $this->loader->add_action( 'admin_menu', $plugin_settings, 'admin_menu' );
-        $this->loader->add_action( 'admin_init', $plugin_settings, 'admin_init' );
 
     }
 
