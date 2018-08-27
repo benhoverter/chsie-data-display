@@ -99,7 +99,7 @@ class CHSIE_Data_Display {
 
         $this->define_admin_hooks();  // Creates an instance of the admin class and hooks its methods in.
         $this->define_public_hooks(); // Creates an instance of the public class and hooks its methods in.
-        $this->define_settings_hooks(); // Creates an instance of the admin settings class and hooks its methods in.
+        //$this->define_settings_hooks(); // Creates an instance of the admin settings class and hooks its methods in.
 
     }
 
@@ -153,7 +153,7 @@ class CHSIE_Data_Display {
         /**
         * The file responsible for defining the SQL queries run by the plugin.
         */
-        //require_once plugin_dir_path( dirname( __FILE__ ) ) . 'config/Queries.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'config/Queries.php';
 
         $this->loader = new CDD_Loader();
 
