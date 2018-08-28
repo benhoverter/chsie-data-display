@@ -22,7 +22,7 @@
 * @link       http://example.com
 * @since      1.0.0
 *
-* @package    chsie-data-display
+* @package    Plugin_Name
 */
 
 // If uninstall not called from WordPress, then exit.
