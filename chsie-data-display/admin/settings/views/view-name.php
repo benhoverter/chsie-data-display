@@ -11,4 +11,4 @@
 */
 ?>
 
-<div id="admin-module">Admin module.</div>
+<div id="settings-module">Settings view.</div>
