@@ -86,19 +86,19 @@ class CHSIE_Data_Display {
     * @since    1.0.0
     */
     public function __construct() {
-        if ( defined( 'PLUGIN_NAME_VERSION' ) ) {
-            $this->version = PLUGIN_NAME_VERSION;
+        if ( defined( 'CHSIE_DATA_DISPLAY_VERSION' ) ) {
+            $this->version = CHSIE_DATA_DISPLAY_VERSION;
         } else {
             $this->version = '1.0.0';
         }
 
-        $this->plugin_title = 'Plugin Name';
+        $this->plugin_title = 'CHSIE Data Display';
 
         // Add required files to set_dependencies():
         $this->load_dependencies( $this->set_dependencies() );
 
         // Instantiate the Loader object:
-        $this->loader = new Plugin_Abbr_Loader();
+        $this->loader = new CDD_Loader();
 
         // Localization.
         $this->set_locale();
@@ -132,7 +132,7 @@ class CHSIE_Data_Display {
 
             // Admin:
             'admin/Assets.php',
-            'admin/Settings.php',
+            'admin/settings/Settings.php',
             'admin/module/Module.php',
             'admin/module-ajax/Module-Ajax.php',
 
@@ -303,7 +303,6 @@ class CHSIE_Data_Display {
         //$this->loader->add_action( 'add_meta_boxes{_post_type}', $module->element, 'render_metabox' );
         //$this->loader->add_action( 'save_post{_post_type}', $module->element, 'save_metabox' );
         $this->loader->add_action( 'wp_head', $module, 'render_view' );
-        $this->loader->add_action( 'wp_head', $module, 'public_test' );
 
     }
 
@@ -323,7 +322,7 @@ class CHSIE_Data_Display {
         $this->loader->add_action( 'wp_head', $module_ajax, 'render_view' );
 
         // AJAX hooks go here:
-        $this->loader->add_action( 'wp_ajax_{action_name}', $module_ajax, 'element_ajax_callback' );
+        //$this->loader->add_action( 'wp_ajax_{action_name}', $module_ajax, 'element_ajax_callback' );
 
     }
 
