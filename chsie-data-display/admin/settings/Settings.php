@@ -57,6 +57,24 @@ class CDD_Settings {
     */
     private $settings_api;
 
+    /**
+    *  The instance of the mysqli connection.
+    *
+    * @since    1.0.0
+    * @access   private
+    * @var      mysqli     $conn    The instance of the mysqli connection.
+    */
+    private $conn;
+
+    /**
+    * The associative array of all MySQL queries to run.
+    *
+    * @since    1.0.0
+    * @access   private
+    * @var      array    $queries    The associative array of all MySQL queries to run.
+    */
+    private $queries;
+
 
     /**
     * Initialize the class and set its properties.
@@ -65,15 +83,16 @@ class CDD_Settings {
     * @param      string    $plugin_title       The name of this plugin.
     * @param      string    $version    The version of this plugin.
     */
-    public function __construct( $plugin_title, $version ) {
+    public function __construct( $plugin_title, $version, $conn, $queries ) {
 
         $this->plugin_title = $plugin_title;
         $this->plugin_slug = $this->get_plugin_slug( $plugin_title );
-
         $this->version = $version;
 
-        require_once plugin_dir_path( __FILE__ ) . 'settings-api/Settings-API.php';
+        $this->conn = $conn;
+        $this->queries = $queries;
 
+        require_once plugin_dir_path( __FILE__ ) . 'settings-api/Settings-API.php';
         $this->settings_api = new WeDevs_Settings_API;
 
     }
@@ -203,26 +222,103 @@ class CDD_Settings {
         $sections = array(
 
             array(
-                'id'    => $this->plugin_slug . '_custom_settings',
-                'title' => __( 'Custom Settings', 'textdomain' ),
-                //'desc' => '<p class="description">This is a custom description.</p>',
+                'id'    => $this->plugin_slug . '_data_section',
+                'title' => __( 'Data Display', 'textdomain' ),
                 'callback' => array(
                     $this,
-                    'do_data_table'
+                    'do_data_section'
                 )
             ),
 
             array(
-                'id'    => $this->plugin_slug . '_basic_settings',
-                'title' => __( 'Basic Settings', 'textdomain' )
+                'id'    => $this->plugin_slug . '_lms_eval_section',
+                'title' => __( 'LMS Evaluations', 'textdomain' ),
+                'callback' => array(
+                    $this,
+                    'do_lms_evals_section'
+                )
             ),
 
         );
         return $sections;
     }
 
-    public function do_data_table() {
-        include( plugin_dir_path( __FILE__ ) . 'views/view-name.php' ) ;
+
+    /**
+    * Calls the view for the Data Display section.
+    *
+    * @since    1.0.0.
+    */
+    public function do_data_section() {
+        include( plugin_dir_path( __FILE__ ) . 'views/data-section.php' ) ;
+    }
+
+
+    /**
+    * Calls the view for the Data Display section.
+    *
+    * @since    1.0.0.
+    */
+    public function do_lms_evals_section() {
+        include( plugin_dir_path( __FILE__ ) . 'views/lms-evals-documentation.php' ) ;
+    }
+
+
+    // *********************** VIEW-CALLED FUNCTIONS *********************** //
+    /**
+    * Generates the html for the Settings page dropdown <select>.
+    * Called in data-section.php.
+    *
+    * @since    1.0.0.
+    * @return   An html string.
+    */
+    private function do_dropdown_select( $queries ) {
+
+        ob_start();
+
+        ?>
+        <select id='cdt-data-select'>
+            <option value='default'>Select a data set</option>
+            <?php
+
+            foreach( $queries as $query ) {
+
+                ?>
+                <option value= <?php echo $query['href_value'] ?> > <?php echo $query['title'] ?> </option>
+                <?php
+
+            }
+
+            ?>
+        </select>
+        <?php
+
+        echo ob_get_clean();
+
+    }
+
+
+    /**
+    * Checks the status of the MySQLi connection and throws errors.
+    * Called in data-section.php.
+    *
+    * @since    1.0.0
+    */
+    public function check_conn_status( $conn ) {
+
+        // Check connection.
+        if ($conn->connect_error) {
+
+            $conn_status = '<p style="color: crimson;">Connection failed: ' . $conn->connect_error . ' .</p>';
+            die("Sorry, connection problem: " . $conn->connect_error);
+
+        } else {
+
+            $conn_status = '<p><em>Connection to database established.</em></p>';
+
+        }
+
+        return $conn_status;
     }
 
 
@@ -235,7 +331,7 @@ class CDD_Settings {
     */
     private function get_settings_fields() {
         $settings_fields = array(
-            $this->plugin_slug . '_basic_settings' => array(
+            $this->plugin_slug . '_lms_eval_section' => array(
                 array(
                     'name'              => 'text_val',
                     'label'             => __( 'Text Input', 'textdomain' ),
@@ -312,50 +408,6 @@ class CDD_Settings {
                     'options' => array(
                         'button_label' => 'Choose Image'
                     )
-                )
-            ),
-
-            $this->plugin_slug . '_advanced_settings' => array(
-                array(
-                    'name'    => 'color',
-                    'label'   => __( 'Color', 'textdomain' ),
-                    'desc'    => __( 'Color description', 'textdomain' ),
-                    'type'    => 'color',
-                    'default' => ''
-                ),
-                array(
-                    'name'    => 'password',
-                    'label'   => __( 'Password', 'textdomain' ),
-                    'desc'    => __( 'Password description', 'textdomain' ),
-                    'type'    => 'password',
-                    'default' => ''
-                ),
-                array(
-                    'name'    => 'wysiwyg',
-                    'label'   => __( 'Advanced Editor', 'textdomain' ),
-                    'desc'    => __( 'WP_Editor description', 'textdomain' ),
-                    'type'    => 'wysiwyg',
-                    'default' => ''
-                ),
-                array(
-                    'name'    => 'multicheck',
-                    'label'   => __( 'Multiple checkbox', 'textdomain' ),
-                    'desc'    => __( 'Multi checkbox description', 'textdomain' ),
-                    'type'    => 'multicheck',
-                    'default' => array('one' => 'one', 'four' => 'four'),
-                    'options' => array(
-                        'one'   => 'One',
-                        'two'   => 'Two',
-                        'three' => 'Three',
-                        'four'  => 'Four'
-                    )
-                ),
-                array(
-                    'name'    => 'pages',
-                    'label'   => __( 'Page Select', 'textdomain' ),
-                    'desc'    => __( 'Page Select description', 'textdomain' ),
-                    'type'    => 'pages',
-                    'default' => ''
                 )
             )
         );

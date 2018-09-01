@@ -103,6 +103,10 @@ class CHSIE_Data_Display {
         // Localization.
         $this->set_locale();
 
+        // Database
+        $this->set_db_connection();
+        $this->get_queries();
+
         // Define the hooks and pass them to the Loader:
         $this->define_hooks();
 
@@ -240,7 +244,7 @@ class CHSIE_Data_Display {
     */
     private function define_settings_hooks() {
 
-        $plugin_settings = new CDD_Settings( $this->get_plugin_title(), $this->get_version() );
+        $plugin_settings = new CDD_Settings( $this->get_plugin_title(), $this->get_version(), $this->conn, $this->queries );
 
         // Standard functions that call dev-defined sections and menus in the Settings class:
         $this->loader->add_action( 'admin_menu', $plugin_settings, 'admin_menu' );
