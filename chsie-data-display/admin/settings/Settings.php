@@ -19,7 +19,7 @@
 * @author     Ben Hoverter <ben.hoverter@gmail.com> (modifier)
 * @author     Tareq Hasan, WeDevs Settings API creator
 */
-class CDD_Settings {
+class CDD_Admin_Settings {
 
     /**
     * The ID of this plugin.
@@ -243,7 +243,7 @@ class CDD_Settings {
         return $sections;
     }
 
-
+    // ********************* SECTION CALLBACK FUNCTIONS ********************* //
     /**
     * Calls the view for the Data Display section.
     *
@@ -322,6 +322,7 @@ class CDD_Settings {
     }
 
 
+    // ******************* CREATE SETTINGS API FIELDS HERE ******************* //
     /**
     * Defines and returns all the settings fields.
     * Modify values and number of elements for your needs.
@@ -331,7 +332,7 @@ class CDD_Settings {
     */
     private function get_settings_fields() {
         $settings_fields = array(
-            $this->plugin_slug . '_lms_eval_section' => array(
+            $this->plugin_slug . '_lms_eval_section' => array( // The fields for the LMS Evaluations tab.
                 array(
                     'name'              => 'text_val',
                     'label'             => __( 'Text Input', 'textdomain' ),
@@ -416,6 +417,8 @@ class CDD_Settings {
     }
 
 
+    // *********************** SETTINGS API PAGE MAKERS *********************** //
+    //                              ( NO TOUCHING. )
     /**
     * Callback function to generate HTML elements for Settings Page.
     * Required for add_options_page().

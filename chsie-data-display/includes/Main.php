@@ -233,18 +233,19 @@ class CHSIE_Data_Display {
 
     }
 
-    // *************** SETTINGS API HOOKS *************** //
-    // ************* NOTE: NO NEED TO CHANGE ************ //
+    // *************** SETTINGS HOOKS *************** //
     /**
     * Register all of the hooks related to the WeDevs Settings API functionality
     * of the plugin.
     *
+    * NOTE: No need to change these.
+    *
     * @since    1.0.0
     * @access   private
     */
-    private function define_settings_hooks() {
+    private function define_admin_settings_hooks() {
 
-        $plugin_settings = new CDD_Settings( $this->get_plugin_title(), $this->get_version(), $this->conn, $this->queries );
+        $plugin_settings = new CDD_Admin_Settings( $this->get_plugin_title(), $this->get_version(), $this->conn, $this->queries );
 
         // Standard functions that call dev-defined sections and menus in the Settings class:
         $this->loader->add_action( 'admin_menu', $plugin_settings, 'admin_menu' );
@@ -252,6 +253,25 @@ class CHSIE_Data_Display {
 
     }
 
+    /**
+    * Register all of the hooks related to the Settings AJAX functionality.
+    *
+    * @since    1.0.0
+    * @access   private
+    */
+    private function define_admin_settings_ajax_hooks() {
+
+        $module_ajax = new CDD_Admin_Settings_Ajax( $this->get_plugin_title(), $this->get_version() );
+
+        // Standard hooks go here:
+        //$this->loader->add_action( 'add_meta_boxes{_post_type}', $module_ajax, 'render_metabox' );
+        //$this->loader->add_action( 'save_post{_post_type}', $module_ajax, 'save_metabox' );
+        //$this->loader->add_action( 'admin_init', $module_ajax, 'render_view' );
+
+        // AJAX hooks go here:
+        $this->loader->add_action( 'wp_ajax_data_select', $module_ajax, 'cdd_ajax_data_table' );
+
+    }
 
     // ************* ADMIN MODULE HOOKS ************* //
     /**
