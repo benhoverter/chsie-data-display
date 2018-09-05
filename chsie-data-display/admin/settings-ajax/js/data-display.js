@@ -52,7 +52,7 @@
                 data:
                 {
                         action: 'data_select',  // Same as in wp_ajax_{data_select}().
-                        //ajax_nonce: cdd_settings_ajax_data.ajax_nonce,
+                        ajax_nonce: cdd_settings_ajax_data.settings_ajax_data_nonce,
                         data_selection: selection
                 },
 

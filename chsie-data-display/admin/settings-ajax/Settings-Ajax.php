@@ -122,7 +122,7 @@ class CDD_Admin_Settings_Ajax {
     */
     public function cdd_ajax_data_table() {
 
-        //check_ajax_referer( 'cdd_settings_ajax_data_nonce', 'module_ajax_nonce' ); // Dies if false.
+        check_ajax_referer( 'cdd_settings_ajax_data_nonce', 'ajax_nonce' ); // Dies if false.
 
         // Call the handler function.
         echo $this->do_data_table();
