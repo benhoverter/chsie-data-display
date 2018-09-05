@@ -333,6 +333,9 @@ class CHSIE_Data_Display {
         //$this->loader->add_action( 'save_post{_post_type}', $module_ajax, 'save_metabox' );
         $this->loader->add_action( 'wp_head', $module_ajax, 'render_view' );
 
+        // Data to frontend here with wp_localize_script():
+        //$this->loader->add_action( 'wp_enqueue_scripts', $module_ajax, 'set_module_ajax_data' );
+
         // AJAX hooks go here:
         //$this->loader->add_action( 'wp_ajax_{action_name}', $module_ajax, 'element_ajax_callback' );
 

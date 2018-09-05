@@ -101,23 +101,27 @@ class CDD_Public_Module_Ajax {
 
 
     /**
-    * Get all data to be passed to the frontend.
-    * Localized in "public/Assets.php".
+    * Set data to be passed to the frontend.
     *
-    * @return   array     $this->ajax_data     The associative array of data to pass.
     * @since    1.0.0
     */
-    public function get_ajax_data() {
+    public function set_module_ajax_data() {
 
-        // Needed on the frontend. No touching!
-        $this->ajax_data[ 'ajax_url' ] = admin_url( 'admin-ajax.php' );
+        // Frontend data for data table:
+        wp_localize_script(
 
-        // Gets checked in module_ajax_callback().
-        $this->ajax_data[ 'module_ajax_nonce' ] = wp_create_nonce( 'cdd_module_ajax_nonce' );
+            $this->plugin_title . '-admin-js',
 
-        // Add key => value pairs here.
+            'cdd_module_ajax_data',
 
-        return $this->ajax_data;
+            array(
+                'ajax_url' => admin_url( 'admin-ajax.php' ),
+                'module_ajax_data_nonce' => wp_create_nonce( 'cdd_module_ajax_nonce' )
+            )
+
+        );
+
+        // Add'l calls to wp_localize_script() for add'l data sets go here:
 
     }
 
@@ -131,7 +135,11 @@ class CDD_Public_Module_Ajax {
     */
     public function module_ajax_callback() {
 
-        check_ajax_referer( 'cdd_module_ajax_nonce', 'module_ajax_nonce' ); // Dies if false.
+        if( ! current_user_can( 'read_private_pages' ) ) {
+            echo "<p>Sorry, it doesn't look like you have permission to do that.</p>";
+        }
+
+        check_ajax_referer( 'cdd_module_ajax_nonce', 'ajax_nonce' ); // Dies if false.
 
         // Call the handler function.
         echo $this->handler_function();

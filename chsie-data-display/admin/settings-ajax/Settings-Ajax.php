@@ -122,6 +122,10 @@ class CDD_Admin_Settings_Ajax {
     */
     public function cdd_ajax_data_table() {
 
+        if( ! current_user_can( 'read_private_pages' ) ) {
+            echo "<p>Sorry, it doesn't look like you have permission to do that.</p>";
+        }
+
         check_ajax_referer( 'cdd_settings_ajax_data_nonce', 'ajax_nonce' ); // Dies if false.
 
         // Call the handler function.

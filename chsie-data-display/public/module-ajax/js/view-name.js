@@ -60,11 +60,11 @@
 
             $.ajax({
                 method: 'POST',
-                url: plugin_abbrev_public_ajax_data.ajax_url, // Grab the url from the PHP ajax data object.
+                url: cdd_module_ajax_data.ajax_url, // Grab the url from the PHP ajax data object.
                 data:
                 {
                         action: 'action_name',  // Same as in wp_ajax_{action_name}().
-                        ajax_nonce: plugin_abbrev_public_ajax_data.ajax_nonce,
+                        ajax_nonce: cdd_module_ajax_data.module_ajax_data_nonce,
                         data_1: "Your data here.",
                         data_2: "Your data here, too."
                 },
