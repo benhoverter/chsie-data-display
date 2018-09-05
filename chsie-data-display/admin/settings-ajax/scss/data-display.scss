@@ -5,6 +5,9 @@
  * Break up Sass by view component if it's complex.
  *
  */
+.faded {
+    opacity: 0;
+}
 
  #chsie-data-tables .wrap {
      clear: both;
@@ -15,23 +18,23 @@
  }
 
 
-  #cdt-table-wrapper {
+  #cdd-table-wrapper {
       position: relative;
   }
 
- #cdt-data-table table > thead {
+ #cdd-data-table table > thead {
       text-align: left;
   }
 
- #cdt-data-table table > tbody td {
+ #cdd-data-table table > tbody td {
       padding-left: 20px;
   }
 
- #cdt-data-table {
+ #cdd-data-table {
       transition: 0.2s all ease-in-out;
   }
 
- #cdt-data-table-mask {
+ #cdd-data-table-mask {
      position: absolute;
      height: 100%;
      width: 100%;
@@ -41,19 +44,19 @@
      transition: 0.2s all ease-in-out;
  }
 
- #chsie-data-tables .spinner {
+ #cdd-button-div .spinner {
      visibility: visible;
      float: none;
      margin: 0;
      transition: 0.2s all ease-in-out;
  }
 
- #cdt-data-select-button {
+ #cdd-data-select-button {
      margin-right: 5px;
  }
 
 
- #cdt-download-csv {
+ #cdd-download-csv {
      display: inline-block;
      transition: 0.2s all ease-in-out;
  }

@@ -26,9 +26,9 @@ class CDD_Admin_Settings_Ajax {
     *
     * @since    1.0.0
     * @access   private
-    * @var      string    $plugin_name    The ID of this plugin.
+    * @var      string    $plugin_title    The ID of this plugin.
     */
-    private $plugin_name;
+    private $plugin_title;
 
     /**
     * The version of this plugin.
@@ -40,24 +40,6 @@ class CDD_Admin_Settings_Ajax {
     private $version;
 
     /**
-    * The data array for admin AJAX functions.
-    *
-    * @since    1.0.0
-    * @access   public
-    * @var      associative array    $ajax_data    The data for admin AJAX functions.
-    */
-    public $ajax_data;
-
-    /**
-    * The nonce for the AJAX call.  Must be available to event_mats_ajax_save().
-    *
-    * @since    1.0.0
-    * @access   public
-    * @var      string    $ajax_nonce    The nonce for the AJAX call.
-    */
-    public $ajax_nonce;
-
-    /**
     * The current post ID.  Needed for AJAX (otherwise unavailable).
     *
     * @since    1.0.0
@@ -66,18 +48,38 @@ class CDD_Admin_Settings_Ajax {
     */
     public $post_id;
 
+    /**
+    * The mysqli database connection instance.
+    *
+    * @since    1.0.0
+    * @access   public
+    * @var      mysqli    $conn    The mysqli database connection instance.
+    */
+    public $conn;
+
+    /**
+    * The array of MySQL queries to run.
+    *
+    * @since    1.0.0
+    * @access   public
+    * @var      array    $queries    The array of MySQL queries to run.
+    */
+    public $queries;
+
 
     /**
     * Initialize the class and set its properties.
     *
     * @since    1.0.0
-    * @param      string    $plugin_name       The name of this plugin.
+    * @param      string    $plugin_title       The name of this plugin.
     * @param      string    $version    The version of this plugin.
     */
-    public function __construct( $plugin_name, $version/* , $conn, $query_master_list */ ) {
+    public function __construct( $plugin_title, $version, $conn, $queries ) {
 
-        $this->plugin_name = $plugin_name;
+        $this->plugin_title = $plugin_title;
         $this->version = $version;
+        $this->conn = $conn;
+        $this->queries = $queries;
 
     }
 
@@ -85,23 +87,27 @@ class CDD_Admin_Settings_Ajax {
     // ***** PRE-CALL METHODS ***** //
 
     /**
-    * Get all data to be passed to the frontend.
-    * Localized in "../Admin.php".
+    * Set data to be passed to the frontend.
     *
-    * @return   array     $this->ajax_data     The associative array of data to pass.
     * @since    1.0.0
     */
-    public function get_ajax_data() {
+    public function set_settings_ajax_data() {
 
-        // Needed on the frontend. No touching!
-        $this->ajax_data[ 'ajax_url' ] = admin_url( 'admin-ajax.php' );
+        // Frontend data for data table:
+        wp_localize_script(
 
-        // Gets checked in module_ajax_callback().
-        //$this->ajax_data[ 'module_ajax_nonce' ] = wp_create_nonce( 'cdd_module_ajax_nonce' );
+            $this->plugin_title . '-admin-js',
 
-        // Add key => value pairs here.
+            'cdd_settings_ajax_data',
 
-        return $this->ajax_data;
+            array(
+                'ajax_url' => admin_url( 'admin-ajax.php' ),
+                'settings_ajax_data_nonce' => wp_create_nonce( 'cdd_settings_ajax_data_nonce' )
+            )
+
+        );
+
+        // Add'l calls to wp_localize_script() for add'l data sets go here:
 
     }
 
@@ -116,13 +122,13 @@ class CDD_Admin_Settings_Ajax {
     */
     public function cdd_ajax_data_table() {
 
-        //check_ajax_referer( 'cdd_module_ajax_nonce', 'module_ajax_nonce' ); // Dies if false.
+        //check_ajax_referer( 'cdd_settings_ajax_data_nonce', 'module_ajax_nonce' ); // Dies if false.
 
         // Call the handler function.
-        //echo $this->do_data_table();
-        echo '<p>Success!</p>';
+        echo $this->do_data_table();
+        //echo '<p>Success!</p>';
 
-        include( plugin_dir_path( __FILE__ ) . 'views/data-display.php' );
+        //include( plugin_dir_path( __FILE__ ) . 'views/data-display.php' );
 
         // Needed to return AJAX:
         wp_die();
@@ -144,9 +150,7 @@ class CDD_Admin_Settings_Ajax {
 
         if( $selected_query === NULL ) {
 
-            ?>
-            <p>Please select a data set to display.</p>
-            <?php
+            echo '<p>No data set selected. Please select a data set to display.</p>';
 
         } else {
 
@@ -174,22 +178,20 @@ class CDD_Admin_Settings_Ajax {
     // *********** PROCESSING FUNCTIONS CALLED IN do_data_table() *********** //
     /**
     * This grabs the query string from POST and compares it to options
-    * in the $query_master_list.
+    * in the $queries.
     * It returns the $selected_query for parse_selection().
     *
     * @since    1.0.0
     */
     public function get_selection() {
 
-        if ( !isset( $_POST['data_selection'] ) ) {
+        $ajax_query_str = $_POST['data_selection'];
+
+        if ( !isset( $ajax_query_str ) || $ajax_query_str === 'default' ) {
             return NULL;
         }
 
-        $ajax_query_str = $_POST['data_selection'];
-
-        //echo $ajax_query_str;
-
-        foreach( $this->query_master_list as $query ) {
+        foreach( $this->queries as $query ) {
 
             if( $query['href_value'] === $ajax_query_str ) {
 
@@ -241,6 +243,8 @@ class CDD_Admin_Settings_Ajax {
 
         }
 
+        //print_r( $query_array );
+
         return $query_array;
 
     }
@@ -261,7 +265,7 @@ class CDD_Admin_Settings_Ajax {
 
                 if( $view_creator = $conn->query( $query_array['inner_view'] ) ) { // Verify success.
 
-                    //$view_status .= "<p>Inner view created successfully!</p>";
+                    $view_status .= "<p>Inner view created successfully!</p>";
 
                 } else {
 
@@ -270,14 +274,14 @@ class CDD_Admin_Settings_Ajax {
 
             } else if ( $query_array['inner_view'] === 0 ) {  // If the inner view doesn't exist in a proper query...
 
-                //$view_status .= "<p>No inner view to create.</p>";
+                $view_status .= "<p>No inner view to create.</p>";
 
             }
 
             // Regardless, run the outer view.
             if( $view_creator = $conn->query( $query_array['outer_view'] ) ) {  // Verify success.
 
-                //$view_status .= "<p>Outer view created successfully!</p>";
+                $view_status .= "<p>Outer view created successfully!</p>";
 
             } else {
 
@@ -360,15 +364,11 @@ class CDD_Admin_Settings_Ajax {
         if ( !empty( $query_array ) ) {
             if ( $conn->query( $query_array['drop_query'] ) ) {  // Drops the views.
 
-                ?>
-                <p id="cdd-drop-views">Views successfully dropped.</p>
-                <?php
+                echo '<p id="cdd-drop-views">Views successfully dropped.</p>';
 
             } else {
 
-                ?>
-                <p id="cdd-drop-views" style="color: crimson;">ERROR: Views not dropped!</p>
-                <?php
+                echo '<p id="cdd-drop-views" style="color: crimson;">Views not dropped!</p>';
 
             }
         }
@@ -376,4 +376,6 @@ class CDD_Admin_Settings_Ajax {
         return ob_get_clean();
 
     }
+
+
 }
