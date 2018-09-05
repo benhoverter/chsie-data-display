@@ -277,7 +277,7 @@ class CDD_Admin_Settings {
         ob_start();
 
         ?>
-        <select id='cdt-data-select'>
+        <select id='cdd-data-select'>
             <option value='default'>Select a data set</option>
             <?php
 

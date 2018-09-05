@@ -7,8 +7,8 @@
 * @since      1.0.0
 *
 * @package    plugin-name
-* @subpackage plugin-name/admin/element-ajax/views
+* @subpackage plugin-name/admin/settings-ajax/views
 */
 ?>
 
-<div id="admin-module-ajax">Admin AJAX module.</div>
+<div id="settings-ajax">Settings AJAX module.</div>

@@ -1,0 +1,82 @@
+/**
+ * SCSS for: admin/element-ajax/data-selection.php.
+ *
+ * Separate Sass files for each view.
+ * Break up Sass by view component if it's complex.
+ *
+ */
+
+ #chsie-data-tables .wrap {
+     clear: both;
+     display: none;
+ }
+
+ #chsie-data-tables .nav-wrapper {
+ }
+
+
+  #cdt-table-wrapper {
+      position: relative;
+  }
+
+ #cdt-data-table table > thead {
+      text-align: left;
+  }
+
+ #cdt-data-table table > tbody td {
+      padding-left: 20px;
+  }
+
+ #cdt-data-table {
+      transition: 0.2s all ease-in-out;
+  }
+
+ #cdt-data-table-mask {
+     position: absolute;
+     height: 100%;
+     width: 100%;
+     background: white;
+     opacity: 0.7;
+     z-index: 999;
+     transition: 0.2s all ease-in-out;
+ }
+
+ #chsie-data-tables .spinner {
+     visibility: visible;
+     float: none;
+     margin: 0;
+     transition: 0.2s all ease-in-out;
+ }
+
+ #cdt-data-select-button {
+     margin-right: 5px;
+ }
+
+
+ #cdt-download-csv {
+     display: inline-block;
+     transition: 0.2s all ease-in-out;
+ }
+
+
+ #chsie-data-tables input[type="radio"] {
+     margin-top: 2px;
+ }
+
+ #chsie-data-tables input[type="text"] {
+     margin: 10px 0 3px 23px;
+     width: 100%;
+ }
+
+ #chsie-data-tables .form-table td p {
+     margin-left: 24px;
+     font-style: italic;
+ }
+
+ #chsie-data-tables label {
+     font-weight: 600;
+ }
+
+ #chsie-data-tables li {
+     margin-bottom: 16px;
+ }

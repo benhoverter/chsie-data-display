@@ -85,22 +85,6 @@ class CDD_Admin_Settings_Ajax {
     // ***** PRE-CALL METHODS ***** //
 
     /**
-    * Render a view.
-    * Different hooks will require separate render_{} methods.
-    *
-    * @since    1.0.0
-    */
-    public function render_view() {
-
-        /**
-        * The view displaying ________.
-        */
-        include( plugin_dir_path( __FILE__ ) . 'views/view-name.php' ) ;
-
-    }
-
-
-    /**
     * Get all data to be passed to the frontend.
     * Localized in "../Admin.php".
     *
@@ -126,6 +110,7 @@ class CDD_Admin_Settings_Ajax {
 
     /**
     * AJAX callback function to bind to wp_ajax_{action_name} hook.
+    * Wrapper for do_data_table().
     *
     * @since    1.0.0
     */
@@ -137,14 +122,12 @@ class CDD_Admin_Settings_Ajax {
         //echo $this->do_data_table();
         echo '<p>Success!</p>';
 
+        include( plugin_dir_path( __FILE__ ) . 'views/data-display.php' );
+
         // Needed to return AJAX:
         wp_die();
 
     }
-
-
-
-
 
 
     /**
@@ -254,7 +237,7 @@ class CDD_Admin_Settings_Ajax {
                 'outer_view' => $selected_query['outer']['query_str'],
                 'main_query' => "SELECT * FROM {$selected_query['outer']['table_name']}",
                 'drop_query' => "DROP VIEW IF EXISTS {$selected_query['outer']['table_name']}"
-            )
+            );
 
         }
 
@@ -378,13 +361,13 @@ class CDD_Admin_Settings_Ajax {
             if ( $conn->query( $query_array['drop_query'] ) ) {  // Drops the views.
 
                 ?>
-                <p id="cdt-drop-views">Views successfully dropped.</p>
+                <p id="cdd-drop-views">Views successfully dropped.</p>
                 <?php
 
             } else {
 
                 ?>
-                <p id="cdt-drop-views" style="color: crimson;">ERROR: Views not dropped!</p>
+                <p id="cdd-drop-views" style="color: crimson;">ERROR: Views not dropped!</p>
                 <?php
 
             }

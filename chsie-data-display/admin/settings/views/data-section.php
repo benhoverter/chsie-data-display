@@ -25,13 +25,13 @@
         </p>
     </div>
 
-    <div id="cdt-button-div">
+    <div id="cdd-button-div">
 
         <?php $this->do_dropdown_select( $this->queries ); ?>
 
         <div class="spinner faded"></div>
-        <a id='cdt-data-select-button' class='button button-primary'>Display</a>
-        <a id='cdt-download-csv' class='button' style='display: none;'>Download CSV</a>
+        <a id='cdd-data-select-button' class='button button-primary'>Display</a>
+        <a id='cdd-download-csv' class='button' style='display: none;'>Download CSV</a>
 
     </div>
 
@@ -40,12 +40,12 @@
             <?php echo $this->check_conn_status( $this->conn ); ?>
         </p>
     </div>
-    <div id="cdt-table-wrapper">
-        <div id="cdt-data-table-mask"></div>
-        <div id="cdt-data-table"></div>
+    <div id="cdd-table-wrapper">
+        <div id="cdd-data-table-mask"></div>
+        <div id="cdd-data-table"></div>
     </div>
 
-    <div id="cdt-credits">
+    <div id="cdd-credits">
         <?php // $this->do_end_messages_data_tables(); ?>
         <p>Developed by Ben Hoverter for the Center for Health Sciences Interprofessional Education, Research and Practice</p>
     </div>

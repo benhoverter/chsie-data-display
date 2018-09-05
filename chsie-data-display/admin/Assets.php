@@ -124,9 +124,6 @@ class CDD_Admin_Assets {
         // Enqueue the scripts.
         wp_enqueue_script( $this->plugin_name );
 
-        // PHP data for the frontend.  Do one wp_localize_script() call per module.
-        // Localize the script to make PHP data available to AJAX JS.  Define data in Element-Ajax.php.
-        //wp_localize_script( $this->plugin_name, 'abbr_admin_module_data', $this->module_ajax->get_ajax_data() );
 
     }
 

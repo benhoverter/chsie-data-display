@@ -137,8 +137,8 @@ class CHSIE_Data_Display {
             // Admin:
             'admin/Assets.php',
             'admin/settings/Settings.php',
+            'admin/settings-ajax/Settings-Ajax.php',
             'admin/module/Module.php',
-            'admin/module-ajax/Module-Ajax.php',
 
             // Public:
             'public/Assets.php',
@@ -188,11 +188,11 @@ class CHSIE_Data_Display {
         $this->define_public_asset_hooks();
 
         // The WeDevs Settings API interface, if used:
-        $this->define_settings_hooks();
+        $this->define_admin_settings_hooks();
+        $this->define_admin_settings_ajax_hooks();
 
         // Create a new hook definer method for each module:
         $this->define_admin_module_hooks();
-        $this->define_admin_module_ajax_hooks();
 
         $this->define_public_module_hooks();
         $this->define_public_module_ajax_hooks();
@@ -261,15 +261,20 @@ class CHSIE_Data_Display {
     */
     private function define_admin_settings_ajax_hooks() {
 
-        $module_ajax = new CDD_Admin_Settings_Ajax( $this->get_plugin_title(), $this->get_version() );
+        $settings_ajax = new CDD_Admin_Settings_Ajax( $this->get_plugin_title(), $this->get_version(), $this->conn, $this->queries );
 
         // Standard hooks go here:
-        //$this->loader->add_action( 'add_meta_boxes{_post_type}', $module_ajax, 'render_metabox' );
-        //$this->loader->add_action( 'save_post{_post_type}', $module_ajax, 'save_metabox' );
-        //$this->loader->add_action( 'admin_init', $module_ajax, 'render_view' );
+        //$this->loader->add_action( 'add_meta_boxes{_post_type}', $settings_ajax, 'render_metabox' );
+        //$this->loader->add_action( 'save_post{_post_type}', $settings_ajax, 'save_metabox' );
+        //$this->loader->add_action( 'admin_init', $settings_ajax, 'render_view' );
 
         // AJAX hooks go here:
-        $this->loader->add_action( 'wp_ajax_data_select', $module_ajax, 'cdd_ajax_data_table' );
+        $this->loader->add_action( 'wp_ajax_data_select', $settings_ajax, 'cdd_ajax_data_table' );
+
+        // PHP data for the frontend.  Do one wp_localize_script() call per module.
+        // Localize the script to make PHP data available to AJAX JS.  Define data in Settings-Ajax.php.
+        wp_localize_script( $this->plugin_name, 'cdd_settings_ajax_data', $settings_ajax->get_ajax_data() );
+
 
     }
 
@@ -291,25 +296,6 @@ class CHSIE_Data_Display {
 
     }
 
-    /**
-    * Register all of the hooks related to the admin module-ajax functionality.
-    *
-    * @since    1.0.0
-    * @access   private
-    */
-    private function define_admin_module_ajax_hooks() {
-
-        $module_ajax = new CDD_Admin_Module_Ajax( $this->get_plugin_title(), $this->get_version() );
-
-        // Standard hooks go here:
-        //$this->loader->add_action( 'add_meta_boxes{_post_type}', $module_ajax, 'render_metabox' );
-        //$this->loader->add_action( 'save_post{_post_type}', $module_ajax, 'save_metabox' );
-        $this->loader->add_action( 'admin_init', $module_ajax, 'render_view' );
-
-        // AJAX hooks go here:
-        //$this->loader->add_action( 'wp_ajax_{action_name}', $module_ajax, 'element_ajax_callback' );
-
-    }
 
 
     // ************* PUBLIC MODULE HOOKS ************* //
