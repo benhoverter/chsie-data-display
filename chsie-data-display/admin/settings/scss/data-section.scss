@@ -1,0 +1,53 @@
+/**
+* SCSS for: admin/settings/views/data-section.php.
+*
+*/
+
+#chsie_data_display_data_section {
+
+    transition: 0.2s all ease-in-out;
+
+    .faded {
+        opacity: 0;
+    }
+
+    .wrap {
+        clear: both;
+        //display: none;
+    }
+
+    #cdd-table-wrapper {
+        position: relative;
+    }
+
+    #cdd-button-div {
+
+        .spinner {
+            visibility: visible;
+            float: none;
+            margin: 0;
+            //transition: 0.2s all ease-in-out;
+        }
+
+    }
+
+    #cdd-data-select-button {
+        margin-right: 5px;
+    }
+
+    #cdd-download-csv {
+        display: inline-block;
+        //transition: 0.2s all ease-in-out;
+    }
+
+    #cdd-data-table-mask {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background: white;
+        opacity: 0.7;
+        z-index: 999;
+        //transition: 0.2s all ease-in-out;
+    }
+
+}

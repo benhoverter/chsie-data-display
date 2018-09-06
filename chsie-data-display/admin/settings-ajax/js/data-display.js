@@ -67,7 +67,7 @@
                     $( '#cdd-data-table' ).height( regHeight );
 
                     // Pretty fades.
-                    $( '#cdd-download-csv' ).fadeOut( 'fast' );
+                    //$( '#cdd-download-csv' ).fadeOut( 'fast' );
                     $( '#cdd-data-table-mask' ).fadeIn( 'fast' );
                     $( '#cdd-button-div .spinner' ).removeClass( 'faded' );
 

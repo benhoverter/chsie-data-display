@@ -31,7 +31,7 @@
 
         <div class="spinner faded"></div>
         <a id='cdd-data-select-button' class='button button-primary'>Display</a>
-        <a id='cdd-download-csv' class='button' style='display: none;'>Download CSV</a>
+        <a id='cdd-download-csv' class='button'>Download CSV</a>
 
     </div>
 

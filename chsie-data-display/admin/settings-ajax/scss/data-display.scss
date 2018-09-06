@@ -1,87 +1,46 @@
 /**
- * SCSS for: admin/element-ajax/data-selection.php.
- *
- * Separate Sass files for each view.
- * Break up Sass by view component if it's complex.
- *
- */
-.faded {
-    opacity: 0;
+* SCSS for: admin/settings-ajax/data-display.php.
+*
+*/
+
+
+
+#cdd-data-table {
+
+    table {
+
+        thead {
+            text-align: left;
+        }
+
+        tbody td {
+            padding-left: 20px;
+        }
+    }
 }
 
- #chsie-data-tables .wrap {
-     clear: both;
-     display: none;
- }
-
- #chsie-data-tables .nav-wrapper {
- }
-
-
-  #cdd-table-wrapper {
-      position: relative;
-  }
-
- #cdd-data-table table > thead {
-      text-align: left;
-  }
-
- #cdd-data-table table > tbody td {
-      padding-left: 20px;
-  }
-
- #cdd-data-table {
-      transition: 0.2s all ease-in-out;
-  }
-
- #cdd-data-table-mask {
-     position: absolute;
-     height: 100%;
-     width: 100%;
-     background: white;
-     opacity: 0.7;
-     z-index: 999;
-     transition: 0.2s all ease-in-out;
- }
-
- #cdd-button-div .spinner {
-     visibility: visible;
-     float: none;
-     margin: 0;
-     transition: 0.2s all ease-in-out;
- }
-
- #cdd-data-select-button {
-     margin-right: 5px;
- }
-
-
- #cdd-download-csv {
-     display: inline-block;
-     transition: 0.2s all ease-in-out;
- }
 
 
 
 
- #chsie-data-tables input[type="radio"] {
-     margin-top: 2px;
- }
+#chsie_data_display_data_section input[type="radio"] {
+    margin-top: 2px;
+}
 
- #chsie-data-tables input[type="text"] {
-     margin: 10px 0 3px 23px;
-     width: 100%;
- }
+#chsie_data_display_data_section input[type="text"] {
+    margin: 10px 0 3px 23px;
+    width: 100%;
+}
 
- #chsie-data-tables .form-table td p {
-     margin-left: 24px;
-     font-style: italic;
- }
+#chsie_data_display_data_section .form-table td p {
+    margin-left: 24px;
+    font-style: italic;
+}
 
- #chsie-data-tables label {
-     font-weight: 600;
- }
+#chsie_data_display_data_section label {
+    font-weight: 600;
+}
 
- #chsie-data-tables li {
-     margin-bottom: 16px;
- }
+#chsie_data_display_data_section li {
+    margin-bottom: 16px;
+}
