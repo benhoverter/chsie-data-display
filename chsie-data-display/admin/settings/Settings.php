@@ -136,6 +136,9 @@ class CDD_Admin_Settings {
 
         // Initialize the settings in the API Class.
         $this->settings_api->admin_init();
+
+        // Initialize the custom fields outside the WeDevs API: ????
+        //$this->do_lms_evals_fields();
     }
 
 
@@ -187,7 +190,7 @@ class CDD_Admin_Settings {
     *           with the name of the callback function.
     *           (This is array callable syntax:
     *               http://php.net/manual/en/language.types.callable.php ).
-    *           ************* This callback should echo its output *************
+    *           ************* This callback should echo its output! ************
     *
     * @since    Custom addition for WeDevs Settings API.
     *
@@ -211,7 +214,7 @@ class CDD_Admin_Settings {
                     $this,
                     'do_lms_evals_section'
                 )
-            ),
+            )
 
         );
         return $sections;
@@ -229,13 +232,52 @@ class CDD_Admin_Settings {
 
 
     /**
-    * Calls the view for the Data Display section.
+    * Calls the view for the LMS Evaluations section and sets up the fields.
     *
     * @since    1.0.0.
     */
     public function do_lms_evals_section() {
-        include( plugin_dir_path( __FILE__ ) . 'views/lms-evals-section.php' ) ;
+        include( plugin_dir_path( __FILE__ ) . 'views/lms-evals-section.php' );
     }
+
+
+
+
+    /**
+    * Adds and registers the custom fields for the LMS Evaluations section.
+    * Called in $this->admin_init().
+    *
+    * @since    1.0.0.
+    */
+    private function do_lms_evals_fields() {
+
+        add_settings_field(
+            'lms_evals_title_field',
+            'Evaluation Titles',
+            array( $this, 'do_lms_evals_title_field' ),
+            $this->plugin_slug . '_settings',
+            $this->plugin_slug . '_lms_evals_section' // Shows in this section!
+        );
+        register_setting(
+            $this->plugin_slug . '_settings',
+            'lms_evals_title_field'      // The db option name.  Must match the 'name' attr in inputs!
+        );
+
+
+        add_settings_field(
+            'lms_evals_cta_field',
+            'Call To Action',
+            array( $this, 'do_lms_evals_cta_field' ),
+            $this->plugin_slug . '_settings',
+            $this->plugin_slug . '_lms_evals_section'
+        );
+        register_setting(
+            $this->plugin_slug . '_settings',
+            'lms_evals_cta_field'
+        );
+
+    }
+
 
 
     // *********************** VIEW-CALLED FUNCTIONS *********************** //
@@ -296,6 +338,11 @@ class CDD_Admin_Settings {
     }
 
 
+    public function custom_field_callback() {
+        echo "<p>Here's the callback output.</p>";
+    }
+
+
     // ******************* CREATE SETTINGS API FIELDS HERE ******************* //
     /**
     * Defines and returns all the settings fields.
@@ -307,82 +354,17 @@ class CDD_Admin_Settings {
     private function get_settings_fields() {
         $settings_fields = array(
             $this->plugin_slug . '_lms_evals_section' => array( // The fields for the LMS Evaluations tab.
-                array(
-                    'name'              => 'text_val',
-                    'label'             => __( 'Text Input', 'textdomain' ),
-                    'desc'              => __( 'Text input description', 'textdomain' ),
-                    'placeholder'       => __( 'Text Input placeholder', 'textdomain' ),
-                    'type'              => 'text',
-                    'default'           => 'Title',
-                    'sanitize_callback' => 'sanitize_text_field'
+                array(  // Custom callback!
+                    'name'              => 'lms_evals_title_field',
+                    'label'             => __( 'Evaluation Titles', 'textdomain' ),
+                    'callback'          => array( $this, 'do_lms_evals_title_field' )
+                    //'sanitize_callback' => 'sanitize_text_field'
                 ),
-                array(
-                    'name'              => 'number_input',
-                    'label'             => __( 'Number Input', 'textdomain' ),
-                    'desc'              => __( 'Number field with validation callback `floatval`', 'textdomain' ),
-                    'placeholder'       => __( '1.99', 'textdomain' ),
-                    'min'               => 0,
-                    'max'               => 100,
-                    'step'              => '0.01',
-                    'type'              => 'number',
-                    'default'           => 'Title',
-                    'sanitize_callback' => 'floatval'
-                ),
-                array(
-                    'name'        => 'textarea',
-                    'label'       => __( 'Textarea Input', 'textdomain' ),
-                    'desc'        => __( 'Textarea description', 'textdomain' ),
-                    'placeholder' => __( 'Textarea placeholder', 'textdomain' ),
-                    'type'        => 'textarea'
-                ),
-                array(
-                    'name'        => 'html',
-                    'desc'        => __( 'HTML area description. You can use any <strong>bold</strong> or other HTML elements.', 'textdomain' ),
-                    'type'        => 'html'
-                ),
-                array(
-                    'name'  => 'checkbox',
-                    'label' => __( 'Checkbox', 'textdomain' ),
-                    'desc'  => __( 'Checkbox Label', 'textdomain' ),
-                    'type'  => 'checkbox'
-                ),
-                array(
-                    'name'    => 'radio',
-                    'label'   => __( 'Radio Button', 'textdomain' ),
-                    'desc'    => __( 'A radio button', 'textdomain' ),
-                    'type'    => 'radio',
-                    'options' => array(
-                        'yes' => 'Yes',
-                        'no'  => 'No'
-                    )
-                ),
-                array(
-                    'name'    => 'selectbox',
-                    'label'   => __( 'A Dropdown', 'textdomain' ),
-                    'desc'    => __( 'Dropdown description', 'textdomain' ),
-                    'type'    => 'select',
-                    'default' => 'no',
-                    'options' => array(
-                        'yes' => 'Yes',
-                        'no'  => 'No'
-                    )
-                ),
-                array(
-                    'name'    => 'password',
-                    'label'   => __( 'Password', 'textdomain' ),
-                    'desc'    => __( 'Password description', 'textdomain' ),
-                    'type'    => 'password',
-                    'default' => ''
-                ),
-                array(
-                    'name'    => 'file',
-                    'label'   => __( 'File', 'textdomain' ),
-                    'desc'    => __( 'File description', 'textdomain' ),
-                    'type'    => 'file',
-                    'default' => '',
-                    'options' => array(
-                        'button_label' => 'Choose Image'
-                    )
+                array(  // Custom callback!
+                    'name'              => 'lms_evals_cta_field',
+                    'label'             => __( 'Call To Action', 'textdomain' ),
+                    'callback'          => array( $this, 'do_lms_evals_cta_field' )
+                    //'sanitize_callback' => 'sanitize_text_field'
                 )
             )
         );
@@ -391,7 +373,85 @@ class CDD_Admin_Settings {
     }
 
 
-    // *********************** SETTINGS API PAGE MAKERS *********************** //
+    // ********************** FIELD CALLBACK FUNCTIONS ********************** //
+
+    /**
+    * Callback to generate custom field logic and call view for
+    * the Title field in the LMS Evaluations section.
+    *
+    * @since    1.0.0.
+    */
+    public function do_lms_evals_title_field() {
+
+        /*
+        $lms_evals_title_array = get_option( 'lms_evals_title_field' );
+
+        $no_checked = '';
+        $form_checked = '';
+        $custom_checked = '';
+
+        if( ! empty( $lms_evals_title_array ) ) {
+
+            $lms_evals_title = $lms_evals_title_array[ 'radio' ];
+            $custom_title_text = $lms_evals_title_array[ 'custom_title' ];
+
+            if( $lms_evals_title === 'no_title' ) {
+
+                $no_checked = 'checked="checked"';
+
+            } else if ( $lms_evals_title === 'form_title' ) {
+
+                $lms_evals_checked = 'checked="checked"';
+
+            } else if ( $lms_evals_title === 'custom_title' ) {
+
+                $custom_checked = 'checked="checked"';
+
+            }
+
+        }
+        */
+
+        include( plugin_dir_path( __FILE__ ) . 'views/lms-evals-title-field.php' ) ;
+
+    }
+
+
+    /**
+    * Callback to generate custom field logic and call view for
+    * the Call To Action field in the LMS Evaluations section.
+    *
+    * @since    1.0.0.
+    */
+    public function do_lms_evals_cta_field() {
+
+        $lms_evals_cta_array = get_option( 'lms_evals_cta_field' );
+
+        $lms_evals_cta = $lms_evals_cta_array[ 'radio' ];
+        $custom_text = $lms_evals_cta_array[ 'custom_text' ];
+
+        $no_checked = '';
+        $lms_evals_checked = '';
+        $custom_checked = '';
+
+        if( $lms_evals_cta === 'no_cta' ) {
+
+            $no_checked = 'checked="checked"';
+
+        } else if ( $lms_evals_cta === 'custom_cta' ) {
+
+            $custom_checked = 'checked="checked"';
+
+        }
+
+        include( plugin_dir_path( __FILE__ ) . 'views/lms-evals-cta-field.php' ) ;
+
+    }
+
+
+
+
+    // ********************** SETTINGS API PAGE MAKERS ********************** //
     //                              ( NO TOUCHING. )
     /**
     * Callback function to generate HTML elements for Settings Page.
