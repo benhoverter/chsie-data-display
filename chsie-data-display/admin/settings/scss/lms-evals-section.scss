@@ -1,0 +1,51 @@
+/**
+* SCSS for: admin/settings/views/lms-evals-section.php.
+*
+*/
+
+#chsie_data_display_lms_evals_section {
+
+    .documentation {
+        display: inline-block;
+        vertical-align: top;
+        padding-right: 24px;
+        border-right: 1px solid #444444;
+
+        @media screen and ( min-width: 961px  ) {
+            width: 46%;
+        }
+
+        p:first-of-type {
+            margin-top: 0;
+        }
+
+        p {}
+    }
+
+    .form-table {
+        display: inline-block;
+        vertical-align: top;
+        padding-left: 24px;
+
+        @media screen and ( min-width: 961px  ) {
+            width: 50%;
+        }
+
+        tr:first-of-type {
+            th, td {
+                padding-top: 0;
+            }
+        }
+
+    }
+
+
+    label {
+        font-weight: 600;
+    }
+
+    li {
+        margin-bottom: 16px;
+    }
+
+}

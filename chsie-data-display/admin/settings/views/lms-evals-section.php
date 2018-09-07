@@ -8,11 +8,11 @@
 * @since      1.0.0
 *
 * @package    chsie-data-display
-* @subpackage chsie-data-display/admin/element/views
+* @subpackage chsie-data-display/admin/settings/views
 */
 ?>
 
-<div id="lms-evals-documentation" >
+<div class="documentation" >
     <p>
         We want users to give feedback on our LMS lessons, and LearnDash isn’t built for that, so we’ve turned to the free version of well-known form plugin Formidable.  It allows us to make drag-and-drop forms, then insert them via a copy-paste shortcode in the description text of a lesson’s landing page.  From there, this plugin handles some more database tweaks, UI functionality, and styling.  You can adjust the global title and call to action properties for the evaluations using the options on this page.
     </p>

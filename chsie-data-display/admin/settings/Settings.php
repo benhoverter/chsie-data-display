@@ -140,32 +140,6 @@ class CDD_Admin_Settings {
 
 
     /**
-    * Add a Settings menu item  containing all Settings API pages.
-    *
-    * NOTE: Call this method in define_settings_hooks() if you want the plugin's
-    *       settings to show as a Settings menu item, NOT a top-level menu item.
-    *
-    * Additional pages can be generated with new calls to add_options_page().
-    * $plugin_title and $plugin_slug are followed by customizable text.
-    *
-    * @since    Custom addition for WeDevs Settings API.
-    *
-    */
-    public function admin_options() {
-        /**
-        * An instance of this class should be passed as the second parameter
-        * of the run() function defined in CDD_Loader
-        * as all of the hooks are defined in that particular class.
-        *
-        * The CDD_Loader will then create the relationship
-        * between the defined hooks and the functions defined in this
-        * class.
-        */
-        add_options_page( $this->plugin_title . ' Settings', $this->plugin_title, 'manage_options', $this->plugin_slug . '_settings', array($this, 'plugin_page') );
-    }
-
-
-    /**
     * Add a top-level menu item containing all Settings API pages.
     *
     * NOTE: Call this method in define_settings_hooks() if you want the plugin's
@@ -231,7 +205,7 @@ class CDD_Admin_Settings {
             ),
 
             array(
-                'id'    => $this->plugin_slug . '_lms_eval_section',
+                'id'    => $this->plugin_slug . '_lms_evals_section',
                 'title' => __( 'LMS Evaluations', 'textdomain' ),
                 'callback' => array(
                     $this,
@@ -260,7 +234,7 @@ class CDD_Admin_Settings {
     * @since    1.0.0.
     */
     public function do_lms_evals_section() {
-        include( plugin_dir_path( __FILE__ ) . 'views/lms-evals-documentation.php' ) ;
+        include( plugin_dir_path( __FILE__ ) . 'views/lms-evals-section.php' ) ;
     }
 
 
@@ -332,7 +306,7 @@ class CDD_Admin_Settings {
     */
     private function get_settings_fields() {
         $settings_fields = array(
-            $this->plugin_slug . '_lms_eval_section' => array( // The fields for the LMS Evaluations tab.
+            $this->plugin_slug . '_lms_evals_section' => array( // The fields for the LMS Evaluations tab.
                 array(
                     'name'              => 'text_val',
                     'label'             => __( 'Text Input', 'textdomain' ),
