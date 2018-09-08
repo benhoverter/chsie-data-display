@@ -241,46 +241,7 @@ class CDD_Admin_Settings {
     }
 
 
-
-
-    /**
-    * Adds and registers the custom fields for the LMS Evaluations section.
-    * Called in $this->admin_init().
-    *
-    * @since    1.0.0.
-    */
-    private function do_lms_evals_fields() {
-
-        add_settings_field(
-            'lms_evals_title_field',
-            'Evaluation Titles',
-            array( $this, 'do_lms_evals_title_field' ),
-            $this->plugin_slug . '_settings',
-            $this->plugin_slug . '_lms_evals_section' // Shows in this section!
-        );
-        register_setting(
-            $this->plugin_slug . '_settings',
-            'lms_evals_title_field'      // The db option name.  Must match the 'name' attr in inputs!
-        );
-
-
-        add_settings_field(
-            'lms_evals_cta_field',
-            'Call To Action',
-            array( $this, 'do_lms_evals_cta_field' ),
-            $this->plugin_slug . '_settings',
-            $this->plugin_slug . '_lms_evals_section'
-        );
-        register_setting(
-            $this->plugin_slug . '_settings',
-            'lms_evals_cta_field'
-        );
-
-    }
-
-
-
-    // *********************** VIEW-CALLED FUNCTIONS *********************** //
+    // *********************** SECTION VIEW-CALLED FUNCTIONS *********************** //
     /**
     * Generates the html for the Settings page dropdown <select>.
     * Called in data-section.php.
@@ -338,11 +299,6 @@ class CDD_Admin_Settings {
     }
 
 
-    public function custom_field_callback() {
-        echo "<p>Here's the callback output.</p>";
-    }
-
-
     // ******************* CREATE SETTINGS API FIELDS HERE ******************* //
     /**
     * Defines and returns all the settings fields.
@@ -383,17 +339,17 @@ class CDD_Admin_Settings {
     */
     public function do_lms_evals_title_field() {
 
-        /*
-        $lms_evals_title_array = get_option( 'lms_evals_title_field' );
+        // Get the current saved values for the fields:
+        $lms_evals_settings = get_option( 'chsie_data_display_lms_evals_section' );
 
         $no_checked = '';
         $form_checked = '';
         $custom_checked = '';
 
-        if( ! empty( $lms_evals_title_array ) ) {
+        if( ! empty( $lms_evals_settings ) ) {
 
-            $lms_evals_title = $lms_evals_title_array[ 'radio' ];
-            $custom_title_text = $lms_evals_title_array[ 'custom_title' ];
+            $lms_evals_title = isset( $lms_evals_settings['title_radio'] ) ? $lms_evals_settings['title_radio'] : '';
+            $custom_title_text = isset( $lms_evals_settings['title_text'] ) ? $lms_evals_settings['title_text'] : '';
 
             if( $lms_evals_title === 'no_title' ) {
 
@@ -401,7 +357,7 @@ class CDD_Admin_Settings {
 
             } else if ( $lms_evals_title === 'form_title' ) {
 
-                $lms_evals_checked = 'checked="checked"';
+                $form_checked = 'checked="checked"';
 
             } else if ( $lms_evals_title === 'custom_title' ) {
 
@@ -410,8 +366,8 @@ class CDD_Admin_Settings {
             }
 
         }
-        */
 
+        // Show the fields:
         include( plugin_dir_path( __FILE__ ) . 'views/lms-evals-title-field.php' ) ;
 
     }
@@ -425,23 +381,24 @@ class CDD_Admin_Settings {
     */
     public function do_lms_evals_cta_field() {
 
-        $lms_evals_cta_array = get_option( 'lms_evals_cta_field' );
-
-        $lms_evals_cta = $lms_evals_cta_array[ 'radio' ];
-        $custom_text = $lms_evals_cta_array[ 'custom_text' ];
+        $lms_evals_settings = get_option( 'chsie_data_display_lms_evals_section' );
 
         $no_checked = '';
-        $lms_evals_checked = '';
         $custom_checked = '';
 
-        if( $lms_evals_cta === 'no_cta' ) {
+        if( !empty( $lms_evals_settings ) ) {
+            $lms_evals_cta = isset( $lms_evals_settings['cta_radio'] ) ? $lms_evals_settings['cta_radio'] : '';
+            $custom_cta_text = isset( $lms_evals_settings['cta_text'] ) ? $lms_evals_settings['cta_text'] : '';
 
-            $no_checked = 'checked="checked"';
+            if( $lms_evals_cta === 'no_cta' ) {
 
-        } else if ( $lms_evals_cta === 'custom_cta' ) {
+                $no_checked = 'checked="checked"';
 
-            $custom_checked = 'checked="checked"';
+            } else if ( $lms_evals_cta === 'custom_cta' ) {
 
+                $custom_checked = 'checked="checked"';
+
+            }
         }
 
         include( plugin_dir_path( __FILE__ ) . 'views/lms-evals-cta-field.php' ) ;
