@@ -142,6 +142,8 @@ class CHSIE_Data_Display {
 
             // Public:
             'public/Assets.php',
+            'public/lms-evals-ajax/LMS-Evals-Ajax.php',
+
             'public/module/Module.php',
             'public/module-ajax/Module-Ajax.php',
 
@@ -191,10 +193,12 @@ class CHSIE_Data_Display {
         $this->define_admin_settings_ajax_hooks();
 
         // Create a new hook definer method for each module:
+        $this->define_public_lms_evals_ajax_hooks();
+
         //$this->define_admin_module_hooks();
 
-        $this->define_public_module_hooks();
-        $this->define_public_module_ajax_hooks();
+        //$this->define_public_module_hooks();
+        //$this->define_public_module_ajax_hooks();
 
     }
 
@@ -324,14 +328,14 @@ class CHSIE_Data_Display {
     * @since    1.0.0
     * @access   private
     */
-    private function define_public_module_ajax_hooks() {
+    private function define_public_lms_evals_ajax_hooks() {
 
-        $module_ajax = new CDD_Public_Module_Ajax( $this->get_plugin_title(), $this->get_version() );
+        $lms_evals_ajax = new CDD_Public_LMS_Evals_Ajax( $this->get_plugin_title(), $this->get_version() );
 
         // Standard hooks go here:
         //$this->loader->add_action( 'add_meta_boxes{_post_type}', $module_ajax, 'render_metabox' );
         //$this->loader->add_action( 'save_post{_post_type}', $module_ajax, 'save_metabox' );
-        //$this->loader->add_action( 'wp_head', $module_ajax, 'render_view' );
+        $this->loader->add_action( 'wp_head', $lms_evals_ajax, 'echo_eval_settings' );
 
         // Data to frontend here with wp_localize_script():
         //$this->loader->add_action( 'wp_enqueue_scripts', $module_ajax, 'set_module_ajax_data' );
@@ -340,6 +344,31 @@ class CHSIE_Data_Display {
         //$this->loader->add_action( 'wp_ajax_{action_name}', $module_ajax, 'element_ajax_callback' );
 
     }
+
+
+    /**
+    * Register all of the hooks related to the admin module-ajax functionality.
+    *
+    * @since    1.0.0
+    * @access   private
+    */
+    private function define_public_module_ajax_hooks() {
+
+        $lms_evals_ajax = new CDD_Public_LMS_Evals_Ajax( $this->get_plugin_title(), $this->get_version() );
+
+        // Standard hooks go here:
+        //$this->loader->add_action( 'add_meta_boxes{_post_type}', $module_ajax, 'render_metabox' );
+        //$this->loader->add_action( 'save_post{_post_type}', $module_ajax, 'save_metabox' );
+        //$this->loader->add_action( 'wp_head', $lms_evals_ajax, 'echo_eval_settings' );
+
+        // Data to frontend here with wp_localize_script():
+        //$this->loader->add_action( 'wp_enqueue_scripts', $module_ajax, 'set_module_ajax_data' );
+
+        // AJAX hooks go here:
+        //$this->loader->add_action( 'wp_ajax_{action_name}', $module_ajax, 'element_ajax_callback' );
+
+    }
+
 
 
     // ************************* UTILITY METHODS ************************* //
