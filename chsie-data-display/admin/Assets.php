@@ -119,13 +119,14 @@ class CDD_Admin_Assets {
         $admin_js_dir_path = plugin_dir_path( __DIR__ ) . 'assets/admin/admin.min.js';
 
         // Register the script using an automatic and unique version based on modification time.
-        wp_register_script( $this->plugin_title . '-admin-js', $admin_js_dir_url, array( 'jquery' ), filemtime( $admin_js_dir_path ), true );
+        wp_register_script( $this->plugin_title . '-admin-js', $admin_js_dir_url, array( 'jquery', 'Datatables', 'DOMPurify' ), filemtime( $admin_js_dir_path ), true );
+
+        // Dependencies:
+        wp_enqueue_script( 'Datatables', 'https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js', array( 'jquery' ), true );
+        wp_enqueue_script( 'DOMPurify', 'https://cdnjs.cloudflare.com/ajax/libs/dompurify/1.0.8/purify.min.js', true );
 
         // Enqueue the script.
         wp_enqueue_script( $this->plugin_title . '-admin-js' );
-
-        // DataTables!
-        wp_enqueue_script( 'jQdatatables-js', 'https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js', array( 'jquery' ) );
 
     }
 

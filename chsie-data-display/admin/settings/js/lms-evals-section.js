@@ -18,6 +18,8 @@
 
         watchRadios();
 
+        listenToInputs();
+
 
         // ***** FUNCTION DEFINITIONS ***** //
         function doLmsEvalsDOM() {
@@ -54,6 +56,61 @@
                 } else {
                     customText.fadeOut( "fast" );
                 }
+            }
+
+        }
+
+
+        function listenToInputs() {
+
+            const textFields = $( "#chsie_data_display_lms_evals_section .form-table input[type='text']" );
+
+            textFields.off( 'keyup' );
+            let timer = 0;
+
+            textFields.on( 'keydown', function( e ) {
+
+                if( e.key === 'Enter' ) {
+
+                    e.preventDefault();
+
+                    sanitizeInputs( $( this ) );
+
+                    $( "#chsie_data_display_lms_evals_section form" ).submit();
+
+                    console.log("Enter pressed on ", $(this) );
+
+                } else if( e.key === 'Tab' ) {
+
+                    sanitizeInputs( $( this ) );
+                    console.log("Tab pressed on ", $(this) );
+
+                }
+
+            } );
+
+            textFields.on( 'keyup', function( e ) {
+
+                timer = window.setTimeout( () => {
+
+                    sanitizeInputs( $( this ) );
+
+                    //console.log( "Timer ran on ", $(this) );
+
+                }, 250 );
+
+            } );
+
+
+            function sanitizeInputs( input ) {
+
+                let text = input.val();
+
+                // Use DOMPurify:
+                let safeText = DOMPurify.sanitize( text );
+
+                input.val( safeText );
+
             }
 
         }

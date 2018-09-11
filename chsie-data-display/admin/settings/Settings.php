@@ -313,20 +313,22 @@ class CDD_Admin_Settings {
                 array(  // Custom callback!
                     'name'              => 'lms_evals_title_field',
                     'label'             => __( 'Evaluation Titles', 'textdomain' ),
-                    'callback'          => array( $this, 'do_lms_evals_title_field' )
-                    //'sanitize_callback' => 'sanitize_text_field'
+                    'callback'          => array( $this, 'do_lms_evals_title_field' ),
+                    'sanitize_callback' => 'sanitize_text_field'
                 ),
                 array(  // Custom callback!
                     'name'              => 'lms_evals_cta_field',
                     'label'             => __( 'Call To Action', 'textdomain' ),
-                    'callback'          => array( $this, 'do_lms_evals_cta_field' )
-                    //'sanitize_callback' => 'sanitize_text_field'
+                    'callback'          => array( $this, 'do_lms_evals_cta_field' ),
+                    'sanitize_callback' => 'sanitize_text_field'
                 )
             )
         );
 
         return $settings_fields;
     }
+
+
 
 
     // ********************** FIELD CALLBACK FUNCTIONS ********************** //

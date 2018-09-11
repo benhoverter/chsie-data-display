@@ -143,6 +143,7 @@ if ( !class_exists( 'WeDevs_Settings_API' ) ):
                     );
 
                     add_settings_field( "{$section}[{$name}]", $label, $callback, $section, $section, $args );
+                    //echo $option['sanitize_callback'];
                 }
             }
 
