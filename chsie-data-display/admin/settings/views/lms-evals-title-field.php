@@ -30,7 +30,7 @@
         <li>
             <input id="custom_title" name="chsie_data_display_lms_evals_section[title_radio]" type="radio" value="custom_title" <?php echo $custom_checked; ?> />
             <label for="custom_title">Custom Title</label>
-            <input id="custom_title_text" class="custom-text" name="chsie_data_display_lms_evals_section[title_text]" type="text" value=<?php echo esc_html( $custom_title_text ); ?> placeholder="title goes here" />
+            <input id="custom_title_text" class="custom-text" name="chsie_data_display_lms_evals_section[title_text]" type="text" value="<?php echo esc_html( $custom_title_text ); ?>" placeholder="title goes here" />
             <p>
                 Enter a custom title to display on all lesson evaluation forms (e.g., "You're done!").  No HTML.
             </p>

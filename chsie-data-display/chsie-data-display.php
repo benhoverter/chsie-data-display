@@ -15,7 +15,7 @@
 * @wordpress-plugin
 * Plugin Name:       CHSIE Data Display
 * Plugin URI:        https://github.com/benhoverter/chsie-data-display
-* Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+* Description:       This plugin displays data from user demographics and LMS interactions, along with managing options for the post-LMS module evaluations integrated with Formidable.
 * Version:           1.0.0
 * Author:            Ben Hoverter
 * Author URI:        http://github.com/benhoverter

@@ -24,7 +24,7 @@
         <li>
             <input id="custom_cta" name="chsie_data_display_lms_evals_section[cta_radio]" type="radio" value="custom_cta" <?php echo $custom_checked; ?> />
             <label for="custom_cta">Custom Call To Action</label>
-            <input id="custom_cta_text" class="custom-text" name="chsie_data_display_lms_evals_section[cta_text]" type="text" value=<?php echo esc_html( $custom_cta_text ); ?> placeholder="CTA goes here" />
+            <input id="custom_cta_text" class="custom-text" name="chsie_data_display_lms_evals_section[cta_text]" type="text" value="<?php echo esc_html( $custom_cta_text ); ?>" placeholder="CTA goes here" />
             <p>
                 Use a custom call to action.  No HTML.
             </p>
