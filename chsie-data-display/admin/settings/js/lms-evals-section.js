@@ -18,7 +18,7 @@
 
         watchRadios();
 
-        listenToInputs();
+        listenAndSanitize();
 
 
         // ***** FUNCTION DEFINITIONS ***** //
@@ -61,7 +61,7 @@
         }
 
 
-        function listenToInputs() {
+        function listenAndSanitize() {
 
             const textFields = $( "#chsie_data_display_lms_evals_section .form-table input[type='text']" );
 

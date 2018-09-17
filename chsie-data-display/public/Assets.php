@@ -118,10 +118,6 @@ class CDD_Public_Assets {
         // Enqueue the scripts.
         wp_enqueue_script( $this->plugin_title . '-public-js' );
 
-        // PHP data for the frontend.  One wp_localize_script() call per module.
-        // Localize the script to make PHP data available to AJAX JS.  Define data in Element-Ajax.php.
-        //wp_localize_script( $this->plugin_title, 'abbr_public_element_data', $this->element_ajax->get_ajax_data() );
-
     }
 
 

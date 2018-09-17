@@ -26,9 +26,9 @@ class CDD_Public_Module_Ajax {
     *
     * @since    1.0.0
     * @access   private
-    * @var      string    $plugin_name    The ID of this plugin.
+    * @var      string    $plugin_title    The ID of this plugin.
     */
-    private $plugin_name;
+    private $plugin_title;
 
     /**
     * The version of this plugin.
@@ -71,12 +71,12 @@ class CDD_Public_Module_Ajax {
     * Initialize the class and set its properties.
     *
     * @since    1.0.0
-    * @param      string    $plugin_name       The name of the plugin.
+    * @param      string    $plugin_title       The name of the plugin.
     * @param      string    $version           The version of this plugin.
     */
-    public function __construct( $plugin_name, $version ) {
+    public function __construct( $plugin_title, $version ) {
 
-        $this->plugin_name = $plugin_name;
+        $this->plugin_title = $plugin_title;
         $this->version = $version;
 
     }
@@ -110,7 +110,7 @@ class CDD_Public_Module_Ajax {
         // Frontend data for data table:
         wp_localize_script(
 
-            $this->plugin_title . '-admin-js',
+            $this->plugin_title . '-public-js',
 
             'cdd_module_ajax_data',
 

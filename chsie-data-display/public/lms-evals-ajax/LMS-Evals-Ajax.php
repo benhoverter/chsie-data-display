@@ -26,9 +26,9 @@ class CDD_Public_LMS_Evals_Ajax {
     *
     * @since    1.0.0
     * @access   private
-    * @var      string    $plugin_name    The ID of this plugin.
+    * @var      string    $plugin_title    The ID of this plugin.
     */
-    private $plugin_name;
+    private $plugin_title;
 
     /**
     * The version of this plugin.
@@ -40,13 +40,13 @@ class CDD_Public_LMS_Evals_Ajax {
     private $version;
 
     /**
-    * The data object for public AJAX functions.
+    * The data object for LMS Eval AJAX functions.
     *
     * @since    1.0.0
     * @access   private
-    * @var      array    $ajax_data    The data for public AJAX functions.
+    * @var      array    $ajax_eval_data    The data for LMS Eval AJAX functions.
     */
-    private $ajax_data;
+    private $ajax_eval_data;
 
     /**
     * The nonce for the AJAX call.  Must be available to public_ajax_callback().
@@ -71,18 +71,102 @@ class CDD_Public_LMS_Evals_Ajax {
     * Initialize the class and set its properties.
     *
     * @since    1.0.0
-    * @param      string    $plugin_name       The name of the plugin.
+    * @param      string    $plugin_title       The name of the plugin.
     * @param      string    $version           The version of this plugin.
     */
-    public function __construct( $plugin_name, $version ) {
+    public function __construct( $plugin_title, $version ) {
 
-        $this->plugin_name = $plugin_name;
+        $this->plugin_title = $plugin_title;
         $this->version = $version;
 
     }
 
 
     // ***** PRE-CALL METHODS ***** //
+
+    /**
+	 * Retrieves the AJAX data for the public side of the plugin.
+     * Calls wp_localize_script() to pass data to AJAX JS.
+	 *
+	 * @since    1.0.0
+	 */
+	public function set_lms_evals_ajax_data() {
+
+        global $wpdb;
+
+        $user_id = get_current_user_id();
+
+        $post_id = get_the_ID();
+
+        $evaluated = 'false';
+
+        $user_forms = get_user_meta( $user_id, 'eval_forms', true );
+
+        if( !empty( $user_forms ) ) {
+
+            //
+            $form_ids = $wpdb->get_col(
+                $wpdb->prepare(
+                    "
+                        SELECT  form_id
+                        FROM    wp_frm_items
+                        WHERE   post_id = %d
+                        and     user_id = %d
+                    ",
+                    $post_id,
+                    $user_id
+                )
+            );
+
+            if ( ! empty( $form_ids ) ) {
+
+                foreach( $user_forms as $form ){
+
+                    foreach( $form_ids as $form_id ) {
+
+                        $form_id = (int) $form_id;
+
+                        if( $form === $form_id ) {
+                            $evaluated = 'true';
+                            break;
+                        }
+                    }
+                }
+            }
+
+        }
+
+        // Stick the data in an array for wp_localize_script():
+
+        // Necessary. No touching.
+        $this->ajax_eval_data[ 'ajax_url' ] = admin_url( 'admin-ajax.php' );
+
+        // Gets checked in ajax_eval_update().
+        //$this->ajax_eval_data[ 'ajax_nonce' ] = wp_create_nonce( 'cdt_public_ajax_nonce' );
+
+        $this->ajax_eval_data[ 'user_id' ] = $user_id;
+
+        $this->ajax_eval_data[ 'post_id' ] = $post_id;
+
+        $this->ajax_eval_data[ 'form_id' ] = $form_id;
+
+        $this->ajax_eval_data[ 'evaluated' ] = $evaluated;
+
+        $this->ajax_eval_data[ 'user_forms' ] = $user_forms;
+
+        // Frontend data for lms-evals-ajax.js:
+        wp_localize_script(
+
+            $this->plugin_title . '-public-js',
+
+            'cdd_public_lms_evals_ajax_data',
+
+            $this->ajax_eval_data
+
+        );
+
+    }
+
 
     /**
 	 * Echoes the custom settings for the LMS Evaluations.
@@ -124,65 +208,31 @@ class CDD_Public_LMS_Evals_Ajax {
 
     }
 
-    /**
-    * Render a view.
-    * Different hooks will require separate render_{} methods.
-    *
-    * @since    1.0.0
-    */
-    public function render_view() {
-
-        /**
-        * The view displaying ________.
-        */
-        include( plugin_dir_path( __FILE__ ) . 'views/view-name.php' ) ;
-
-    }
-
-
-    /**
-    * Set data to be passed to the frontend.
-    *
-    * @since    1.0.0
-    */
-    public function set_module_ajax_data() {
-
-        // Frontend data for data table:
-        wp_localize_script(
-
-            $this->plugin_title . '-admin-js',
-
-            'cdd_module_ajax_data',
-
-            array(
-                'ajax_url' => admin_url( 'admin-ajax.php' ),
-                'module_ajax_data_nonce' => wp_create_nonce( 'cdd_module_ajax_nonce' )
-            )
-
-        );
-
-        // Add'l calls to wp_localize_script() for add'l data sets go here:
-
-    }
-
 
     // ***** POST-CALL METHODS ***** //
 
     /**
-    * AJAX callback function to bind to wp_ajax_{action_name} hook.
-    *
-    * @since    1.0.0
-    */
-    public function module_ajax_callback() {
+     * AJAX callback function to bind to wp_ajax_lms_eval_update hook.
+     *
+     * @since    1.0.0
+     */
+    public function lms_eval_update() {
 
-        if( ! current_user_can( 'read_private_pages' ) ) {
-            echo "<p>Sorry, it doesn't look like you have permission to do that.</p>";
+        //check_ajax_referer( 'cdt_public_ajax_nonce', 'ajax_nonce' ); // Dies if false.
+
+        if(  isset( $_POST['user_id'] ) && isset( $_POST['form_id'] ) && isset( $_POST['post_id'] )  ) {
+
+            $user_id = (int) $_POST['user_id'];
+            $form_id = (int) $_POST['form_id'];
+            $post_id = (int) $_POST['post_id'];
+
+            $this->do_eval_update( $user_id, $form_id, $post_id );
+
+        } else {
+
+            echo "<p>Sorry, there was an error.  Your evaluation wasn't saved.</p>";
+
         }
-
-        check_ajax_referer( 'cdd_module_ajax_nonce', 'ajax_nonce' ); // Dies if false.
-
-        // Call the handler function.
-        echo $this->handler_function();
 
         // Needed to return AJAX:
         wp_die();
@@ -191,11 +241,60 @@ class CDD_Public_LMS_Evals_Ajax {
 
 
     /**
-    * Handler function called by module_ajax_callback().
-    *
-    * @since    1.0.0
-    */
-    private function handler_function() {
+     * Handler function called by ajax_eval_update().
+     *
+     * @since    1.0.0
+     */
+    public function do_eval_update( $user_id, $form_id, $post_id ) {
+
+        global $wpdb;
+
+        // Update usermeta with $form_id to show they've done that survey:
+        $eval_forms = get_user_meta( $user_id, 'eval_forms', true ); // Empty string if DNE.
+
+        // To manage the "empty string" issue:
+        if( $eval_forms === "" ) {
+            $eval_forms = array();
+        }
+
+        $eval_forms[] = $form_id;
+
+        $eval_update = update_user_meta( $user_id, 'eval_forms', $eval_forms );
+        //print_r( $eval_update ); // Returns (int) meta_id on new record, true on update, false on no update.
+
+
+        /**
+        * Update the post_id associated with this form, user, and frm_item.
+        * If the form shortcode has moved to a new post, or the post ID has changed,
+        * the database will reflect that for users who submitted on the new post ID.
+        */
+        $post_id_update = $wpdb->update(
+
+            'wp_frm_items',
+
+            array( // UPDATE...
+                'post_id' => $post_id
+            ),
+
+            array( // WHERE...
+                'form_id' => $form_id,
+                'user_id' => $user_id
+            ),
+
+            array(
+                '%d'
+            ),
+
+            array(
+                '%d'
+            )
+        );
+
+        //echo "<p>Eval forms is " . print_r($eval_forms) . "</p>";
+        //echo "<p>Eval update returned " . $eval_update . "</p>";
+        //echo "<p>post_id update returned " . $post_id_update . "</p>";
+
+        echo "<p>You shouldn't see this evaluation again.</p>";
 
     }
 

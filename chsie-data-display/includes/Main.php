@@ -338,10 +338,11 @@ class CHSIE_Data_Display {
         $this->loader->add_action( 'wp_head', $lms_evals_ajax, 'echo_eval_settings' );
 
         // Data to frontend here with wp_localize_script():
-        //$this->loader->add_action( 'wp_enqueue_scripts', $module_ajax, 'set_module_ajax_data' );
+        $this->loader->add_action( 'wp_enqueue_scripts', $lms_evals_ajax, 'set_lms_evals_ajax_data' );
 
         // AJAX hooks go here:
-        //$this->loader->add_action( 'wp_ajax_{action_name}', $module_ajax, 'element_ajax_callback' );
+        //$this->loader->add_action( 'wp_ajax_lms_eval_update', $lms_evals_ajax, 'lms_eval_update' );
+        $this->loader->add_action( 'wp_ajax_lms_eval_update', $lms_evals_ajax, 'lms_eval_update' );
 
     }
 
@@ -354,12 +355,12 @@ class CHSIE_Data_Display {
     */
     private function define_public_module_ajax_hooks() {
 
-        $lms_evals_ajax = new CDD_Public_LMS_Evals_Ajax( $this->get_plugin_title(), $this->get_version() );
+        $module_ajax = new CDD_Public_Module_Ajax( $this->get_plugin_title(), $this->get_version() );
 
         // Standard hooks go here:
         //$this->loader->add_action( 'add_meta_boxes{_post_type}', $module_ajax, 'render_metabox' );
         //$this->loader->add_action( 'save_post{_post_type}', $module_ajax, 'save_metabox' );
-        //$this->loader->add_action( 'wp_head', $lms_evals_ajax, 'echo_eval_settings' );
+        //$this->loader->add_action( 'wp_head', $module_ajax, 'echo_eval_settings' );
 
         // Data to frontend here with wp_localize_script():
         //$this->loader->add_action( 'wp_enqueue_scripts', $module_ajax, 'set_module_ajax_data' );

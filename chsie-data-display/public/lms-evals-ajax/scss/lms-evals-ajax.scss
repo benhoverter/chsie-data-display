@@ -1,0 +1,43 @@
+/**
+ * SCSS for: public/lms-evals-ajax/LMS-Evals-Ajax.php.
+ *
+ * Separate Sass files for each view.
+ *
+ */
+
+ #eval-settings {
+     display: none;
+ }
+
+ /*.learndash_content*/ .frm_forms {
+     display: none;
+     padding: 26px;
+     border: 2px solid #4b2e83;
+     background-color: #f2f2f2;
+
+     h2 {
+         color: #85754d;
+     }
+
+     .form-cta {
+         font-weight: 700;
+         color: #4b2e83;
+         font-family: Encode Sans Compressed;
+         font-size: 20px;
+     }
+
+     fieldset > p {
+         margin-bottom: 16px;
+     }
+
+     .vertical_radio > .frm_opt_container {
+         padding-left: 16px;
+         margin-bottom: 20px;
+     }
+
+     textarea {
+         width: 100%;
+         margin: 10px 0;
+     }
+
+ }
