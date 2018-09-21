@@ -142,7 +142,7 @@ class CDD_Public_LMS_Evals_Ajax {
         $this->ajax_eval_data[ 'ajax_url' ] = admin_url( 'admin-ajax.php' );
 
         // Gets checked in ajax_eval_update().
-        //$this->ajax_eval_data[ 'ajax_nonce' ] = wp_create_nonce( 'cdt_public_ajax_nonce' );
+        $this->ajax_eval_data[ 'ajax_nonce' ] = wp_create_nonce( 'cdd_public_lms_evals_nonce' );
 
         $this->ajax_eval_data[ 'user_id' ] = $user_id;
 
@@ -156,13 +156,9 @@ class CDD_Public_LMS_Evals_Ajax {
 
         // Frontend data for lms-evals-ajax.js:
         wp_localize_script(
-
             $this->plugin_title . '-public-js',
-
             'cdd_public_lms_evals_ajax_data',
-
             $this->ajax_eval_data
-
         );
 
     }
@@ -218,7 +214,7 @@ class CDD_Public_LMS_Evals_Ajax {
      */
     public function lms_eval_update() {
 
-        //check_ajax_referer( 'cdt_public_ajax_nonce', 'ajax_nonce' ); // Dies if false.
+        check_ajax_referer( 'cdd_public_lms_evals_nonce', 'ajax_nonce' ); // Dies if false.
 
         if(  isset( $_POST['user_id'] ) && isset( $_POST['form_id'] ) && isset( $_POST['post_id'] )  ) {
 
@@ -241,7 +237,7 @@ class CDD_Public_LMS_Evals_Ajax {
 
 
     /**
-     * Handler function called by ajax_eval_update().
+     * Handler function called by lms_eval_update().
      *
      * @since    1.0.0
      */
@@ -294,7 +290,7 @@ class CDD_Public_LMS_Evals_Ajax {
         //echo "<p>Eval update returned " . $eval_update . "</p>";
         //echo "<p>post_id update returned " . $post_id_update . "</p>";
 
-        echo "<p>You shouldn't see this evaluation again.</p>";
+        echo "<p style='height: 0; margin-bottom: 0;'>You shouldn't see this evaluation again.</p>";
 
     }
 

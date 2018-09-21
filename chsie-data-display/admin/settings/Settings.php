@@ -241,7 +241,7 @@ class CDD_Admin_Settings {
     }
 
 
-    // *********************** SECTION VIEW-CALLED FUNCTIONS *********************** //
+    // *********************** FUNCTIONS CALLED IN SECTION VIEWS *********************** //
     /**
     * Generates the html for the Settings page dropdown <select>.
     * Called in data-section.php.

@@ -86,7 +86,7 @@
                 data:
                 {
                         action: 'lms_eval_update',  // Same as in wp_ajax_{lms_eval_update}.
-                        //ajax_nonce: cdd_public_lms_evals_ajax_data.ajax_nonce,
+                        ajax_nonce: cdd_public_lms_evals_ajax_data.ajax_nonce,
                         user_id: cdd_public_lms_evals_ajax_data.user_id,
                         post_id: cdd_public_lms_evals_ajax_data.post_id,
                         form_id: form_id
@@ -99,6 +99,14 @@
                     //console.log( "AJAX returned a jqXHR object of: " + jqXHR + "." );
 
                     $( '.frm_message > p' ).after( html ); // Use the AJAX return value as the HTML content
+
+                    $( '.frm_message > p' ).css({
+                        'height': 'auto'
+                    });
+
+                    $( '.frm_message').css({
+                        'opacity': '1'
+                    }); // Pretty fade in.
 
                     // Standard for WP API, and just handy:
                     $( document.body ).trigger( 'post-load' );

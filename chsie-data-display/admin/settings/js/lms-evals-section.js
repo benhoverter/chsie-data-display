@@ -71,13 +71,11 @@
             textFields.on( 'keydown', function( e ) {
 
                 if( e.key === 'Enter' ) {
-
                     e.preventDefault();
 
                     sanitizeInputs( $( this ) );
 
                     $( "#chsie_data_display_lms_evals_section form" ).submit();
-
                     console.log("Enter pressed on ", $(this) );
 
                 } else if( e.key === 'Tab' ) {
@@ -92,11 +90,8 @@
             textFields.on( 'keyup', function( e ) {
 
                 timer = window.setTimeout( () => {
-
                     sanitizeInputs( $( this ) );
-
                     //console.log( "Timer ran on ", $(this) );
-
                 }, 250 );
 
             } );
