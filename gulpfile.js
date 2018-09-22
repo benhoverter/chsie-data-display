@@ -16,7 +16,8 @@ const uglify =        require( 'gulp-uglify' );
 const sourcemaps =    require( 'gulp-sourcemaps' );
 
 const devPath =       'E:/wp-dev/project_dev/wp-content/plugins/chsie-data-display';
-const testPath =       'E:/wp-dev/project_test/wp-content/plugins/chsie-data-display';
+const testPath =      'E:/wp-dev/project_test/wp-content/plugins/chsie-data-display';
+const livePath =      'E:/wp-dev/project_live/wp-content/plugins/chsie-data-display';
 
 
 // ***** GROUPED TASK ***** //
@@ -37,6 +38,16 @@ gulp.task( 'test', () => {       // Do it all.
          'css-admin',
          'js-admin',
          'test-copy'
+      );
+} );
+
+gulp.task( 'live', () => {       // Do it all.
+     runSequence(
+         'css-public',
+         'js-public',
+         'css-admin',
+         'js-admin',
+         'live-copy'
       );
 } );
 
@@ -68,6 +79,18 @@ gulp.task( 'test-copy', [ 'test-clean' ], () => {
         .pipe( gulp.dest( testPath ) );  // Put the new file here.
 } );    // Working.
 
+
+// Live Site:
+gulp.task( 'live-clean', () => {                      // Delete the old .css file.
+    return gulp.src( testPath,
+        { read: false } )
+        .pipe( clean( { force: true } ) );
+} );    // Working.
+
+gulp.task( 'live-copy', [ 'live-clean' ], () => {
+    return gulp.src( './chsie-data-display/**' )
+        .pipe( gulp.dest( livePath ) );  // Put the new file here.
+} );    // Working.
 
 
 

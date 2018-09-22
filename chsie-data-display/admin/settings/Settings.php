@@ -348,6 +348,8 @@ class CDD_Admin_Settings {
         $form_checked = '';
         $custom_checked = '';
 
+        $custom_title_text = '';
+
         if( ! empty( $lms_evals_settings ) ) {
 
             $lms_evals_title = isset( $lms_evals_settings['title_radio'] ) ? $lms_evals_settings['title_radio'] : '';
@@ -355,15 +357,15 @@ class CDD_Admin_Settings {
 
             if( $lms_evals_title === 'no_title' ) {
 
-                $no_checked = 'checked="checked"';
+                $no_checked = 'checked';
 
             } else if ( $lms_evals_title === 'form_title' ) {
 
-                $form_checked = 'checked="checked"';
+                $form_checked = 'checked';
 
             } else if ( $lms_evals_title === 'custom_title' ) {
 
-                $custom_checked = 'checked="checked"';
+                $custom_checked = 'checked';
 
             }
 
@@ -388,17 +390,19 @@ class CDD_Admin_Settings {
         $no_checked = '';
         $custom_checked = '';
 
+        $custom_cta_text = '';
+
         if( !empty( $lms_evals_settings ) ) {
             $lms_evals_cta = isset( $lms_evals_settings['cta_radio'] ) ? $lms_evals_settings['cta_radio'] : '';
             $custom_cta_text = isset( $lms_evals_settings['cta_text'] ) ? $lms_evals_settings['cta_text'] : '';
 
             if( $lms_evals_cta === 'no_cta' ) {
 
-                $no_checked = 'checked="checked"';
+                $no_checked = 'checked';
 
             } else if ( $lms_evals_cta === 'custom_cta' ) {
 
-                $custom_checked = 'checked="checked"';
+                $custom_checked = 'checked';
 
             }
         }

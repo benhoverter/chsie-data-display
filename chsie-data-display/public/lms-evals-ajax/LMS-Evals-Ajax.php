@@ -98,6 +98,8 @@ class CDD_Public_LMS_Evals_Ajax {
 
         $post_id = get_the_ID();
 
+        $form_id = 0;
+
         $evaluated = 'false';
 
         $user_forms = get_user_meta( $user_id, 'eval_forms', true );
@@ -148,7 +150,7 @@ class CDD_Public_LMS_Evals_Ajax {
 
         $this->ajax_eval_data[ 'post_id' ] = $post_id;
 
-        $this->ajax_eval_data[ 'form_id' ] = $form_id;
+        //$this->ajax_eval_data[ 'form_id' ] = $form_id;
 
         $this->ajax_eval_data[ 'evaluated' ] = $evaluated;
 
@@ -173,15 +175,16 @@ class CDD_Public_LMS_Evals_Ajax {
 	 */
 	public function echo_eval_settings() {
 
-        /*
+
         if( !is_single() || ( get_post_type() !== 'sfwd-courses' ) ) {
 
-            echo '<p>' . get_post_type() . '</p>';
+            //echo '<p>' . get_post_type() . '</p>';
 
         } else {
-        */
+
             $lms_evals_array = get_option( 'chsie_data_display_lms_evals_section' );
-            $title_radio = $lms_evals_array['title_radio'];
+
+            $title_radio = isset( $lms_evals_array['title_radio'] ) ? $lms_evals_array['title_radio'] : 'not_found';
             $title_text = isset( $lms_evals_array['title_text'] ) ? $lms_evals_array['title_text'] : '' ;
 
             $title_data = 'data-titletype="' . $title_radio . '"';
@@ -192,15 +195,20 @@ class CDD_Public_LMS_Evals_Ajax {
 
             }
 
-            $cta_radio = $lms_evals_array[ 'cta_radio' ];
+            $cta_radio = isset( $lms_evals_array[ 'cta_radio' ] ) ? $lms_evals_array[ 'cta_radio' ] : 'not_found';
             $cta_text = isset( $lms_evals_array[ 'cta_text' ] ) ? $lms_evals_array[ 'cta_text' ] : '' ;
 
-            $cta_data = $cta_radio !== 'no_cta' ? 'data-ctatype="' . $cta_radio . '" data-ctatext="' . $cta_text . '"' : '';
+            $cta_data = 'data-ctatype="' . $cta_radio . '"';
 
+            if( $cta_radio === 'custom_cta' ) {
+
+                $cta_data .= 'data-ctatext="' . $cta_text . '"';  //
+
+            }
 
             echo '<div id="eval-settings" ' . $title_data . ' ' . $cta_data . '></div>';
 
-        // }
+         }
 
     }
 

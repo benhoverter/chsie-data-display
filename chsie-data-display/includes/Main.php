@@ -138,18 +138,14 @@ class CHSIE_Data_Display {
             'admin/Assets.php',
             'admin/settings/Settings.php',
             'admin/settings-ajax/Settings-Ajax.php',
-            'admin/module/Module.php',
 
             // Public:
             'public/Assets.php',
             'public/lms-evals-ajax/LMS-Evals-Ajax.php',
 
-            'public/module/Module.php',
-            'public/module-ajax/Module-Ajax.php',
-
             // Config:
             'config/Config.php',
-            'config/Queries.php'       // End of array.  No comma!
+            'config/Queries.php'       // End of array.
 
         );
 
@@ -194,11 +190,6 @@ class CHSIE_Data_Display {
 
         // Create a new hook definer method for each module:
         $this->define_public_lms_evals_ajax_hooks();
-
-        //$this->define_admin_module_hooks();
-
-        //$this->define_public_module_hooks();
-        //$this->define_public_module_ajax_hooks();
 
     }
 
@@ -271,11 +262,6 @@ class CHSIE_Data_Display {
         *   First parameter should always be the script handle from admin/Assets.php.
         */
 
-        // Standard hooks go here:
-        //$this->loader->add_action( 'add_meta_boxes{_post_type}', $settings_ajax, 'render_metabox' );
-        //$this->loader->add_action( 'save_post{_post_type}', $settings_ajax, 'save_metabox' );
-        //$this->loader->add_action( 'admin_init', $settings_ajax, 'render_view' );
-
         // Data to frontend here with wp_localize_script():
         $this->loader->add_action( 'admin_enqueue_scripts', $settings_ajax, 'set_settings_ajax_data' );
 
@@ -284,46 +270,11 @@ class CHSIE_Data_Display {
 
     }
 
-    // ************* ADMIN MODULE HOOKS ************* //
-    /**
-    * Register all of the hooks related to the admin module functionality.
-    *
-    * @since    1.0.0
-    * @access   private
-    */
-    private function define_admin_module_hooks() {
-
-        $module = new CDD_Admin_Module( $this->get_plugin_title(), $this->get_version() );
-
-        // Standard hooks go here:
-        //$this->loader->add_action( 'add_meta_boxes{_post_type}', $module->element, 'render_metabox' );
-        //$this->loader->add_action( 'save_post{_post_type}', $module->element, 'save_metabox' );
-        //$this->loader->add_action( 'admin_init', $module, 'render_view' );
-
-    }
-
 
 
     // ************* PUBLIC MODULE HOOKS ************* //
     /**
-    * Register all of the hooks related to the admin module functionality.
-    *
-    * @since    1.0.0
-    * @access   private
-    */
-    private function define_public_module_hooks() {
-
-        $module = new CDD_Public_Module( $this->get_plugin_title(), $this->get_version() );
-
-        // Standard hooks go here:
-        //$this->loader->add_action( 'add_meta_boxes{_post_type}', $module->element, 'render_metabox' );
-        //$this->loader->add_action( 'save_post{_post_type}', $module->element, 'save_metabox' );
-        //$this->loader->add_action( 'wp_head', $module, 'render_view' );
-
-    }
-
-    /**
-    * Register all of the hooks related to the admin module-ajax functionality.
+    * Register all of the hooks related to the public lms-evals-ajax functionality.
     *
     * @since    1.0.0
     * @access   private
@@ -333,43 +284,15 @@ class CHSIE_Data_Display {
         $lms_evals_ajax = new CDD_Public_LMS_Evals_Ajax( $this->get_plugin_title(), $this->get_version() );
 
         // Standard hooks go here:
-        //$this->loader->add_action( 'add_meta_boxes{_post_type}', $module_ajax, 'render_metabox' );
-        //$this->loader->add_action( 'save_post{_post_type}', $module_ajax, 'save_metabox' );
         $this->loader->add_action( 'wp_head', $lms_evals_ajax, 'echo_eval_settings' );
 
         // Data to frontend here with wp_localize_script():
         $this->loader->add_action( 'wp_enqueue_scripts', $lms_evals_ajax, 'set_lms_evals_ajax_data' );
 
         // AJAX hooks go here:
-        //$this->loader->add_action( 'wp_ajax_lms_eval_update', $lms_evals_ajax, 'lms_eval_update' );
         $this->loader->add_action( 'wp_ajax_lms_eval_update', $lms_evals_ajax, 'lms_eval_update' );
 
     }
-
-
-    /**
-    * Register all of the hooks related to the admin module-ajax functionality.
-    *
-    * @since    1.0.0
-    * @access   private
-    */
-    private function define_public_module_ajax_hooks() {
-
-        $module_ajax = new CDD_Public_Module_Ajax( $this->get_plugin_title(), $this->get_version() );
-
-        // Standard hooks go here:
-        //$this->loader->add_action( 'add_meta_boxes{_post_type}', $module_ajax, 'render_metabox' );
-        //$this->loader->add_action( 'save_post{_post_type}', $module_ajax, 'save_metabox' );
-        //$this->loader->add_action( 'wp_head', $module_ajax, 'echo_eval_settings' );
-
-        // Data to frontend here with wp_localize_script():
-        //$this->loader->add_action( 'wp_enqueue_scripts', $module_ajax, 'set_module_ajax_data' );
-
-        // AJAX hooks go here:
-        //$this->loader->add_action( 'wp_ajax_{action_name}', $module_ajax, 'element_ajax_callback' );
-
-    }
-
 
 
     // ************************* UTILITY METHODS ************************* //
@@ -434,8 +357,10 @@ class CHSIE_Data_Display {
             $config['password'],
             $config['db_name']
         );
+        if( $this->conn->connect_errno ){
+            echo "Failed to connect to database: (" . $this->conn->connect_errno . ") " . $this->conn->connect_error;
+        }
 
-        return $this->conn;
     }
 
 
@@ -449,7 +374,6 @@ class CHSIE_Data_Display {
 
         $this->queries = CDD_Queries::get_queries();
 
-        return $this->queries;
     }
 
 

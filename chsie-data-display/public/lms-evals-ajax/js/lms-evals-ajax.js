@@ -11,7 +11,7 @@
 
     'use strict';
 
-    $( document ).ready( function() {
+    $( function() {
 
         console.log( "LMS-Evals-Ajax's lms-evals-ajax.js loaded." );
 
@@ -22,40 +22,51 @@
         // ***** FUNCTION DEFINITIONS ***** //
         function doCourseEval(){
 
-            //const courseComplete = ( $( '.course_progress_blue' ).attr( 'style' ) === 'width: 100%;' );
-            //console.log("courseComplete is ", courseComplete);
+            const courseComplete = ( $( '.course_progress_blue' ).attr( 'style' ) === 'width: 100%;' );
+            console.log("courseComplete is ", courseComplete);
 
             const evaluated = cdd_public_lms_evals_ajax_data.evaluated;
             //console.log( "evaluated returned " + evaluated );
 
-            if( /*courseComplete &&*/ evaluated !== 'true' ){
+            if( courseComplete && evaluated !== 'true' ){
 
                 const $form = $( '.frm_forms' );
-                const $button = $form.find( '.frm_submit > button' );
-                const $legend = $form.find( 'legend.frm_screen_reader' );
 
-                const $evalSettings = $( '#eval-settings' );
-                const cta = $evalSettings.attr( 'data-ctatype' ) === 'custom_cta' ? $evalSettings.attr( 'data-ctatext' ) : '';
+                if( $form.length ) {
 
-                let title;
+                    const $button = $form.find( '.frm_submit > button' );
+                    const $legend = $form.find( 'fieldset > legend:first' );
+                    //console.log( $legend );
+                    //console.log( "legend text is ", $legend.text() ); // works.
 
-                if( $evalSettings.attr( 'data-titletype' ) !== 'no_title' ){
+                    const $evalSettings = $( '#eval-settings' );
+                    const cta = $evalSettings.attr( 'data-ctatype' ) === 'custom_cta' ? $evalSettings.attr( 'data-ctatext' ) : '';
+                    //console.log( "cta is", cta );
 
-                    title = ( $evalSettings.attr( 'data-titletype' ) === 'eval_title' ) ?  $legend.text() : $evalSettings.attr( 'data-titletext' );
+                    let formTitle = '';
+                    const titletype = $evalSettings.attr( 'data-titletype' );
 
+                    if( titletype !== 'no_title' && titletype !== 'not_found' ){
+
+                        formTitle = ( $evalSettings.attr( 'data-titletype' ) === 'form_title' ) ?  $legend.text() : $evalSettings.attr( 'data-titletext' );
+
+                    }
+
+                    $form.addClass( 'no-uw-bar' );
+
+                    $button.addClass( 'chsie-button-gold' );
+
+                    if ( cta.length ) {
+                        $legend.after( '<p class="form-cta">' + cta + '</p>' );
+                    }
+                    if( formTitle.length ){
+                        $legend.after( '<h2>' + formTitle + '</h2>' );
+                    }
+
+                    $form.slideDown();
                 }
 
-                $form.addClass( 'no-uw-bar' );
 
-                $button.addClass( 'chsie-button-gold' );
-
-                if( title.length > 0 ){
-                    $legend.after( '<h2>' + title + '</h2><p class="form-cta">' + cta + '</p>' );
-                }
-
-                $form.slideToggle();
-
-                //console.log("Course complete.");
             }
         } /// END OF doCourseEval()
 
@@ -66,7 +77,6 @@
         const needsEvalUpdate = ( $( '.frm_message' ).length > 0 );
         //console.log( "needsEvalUpdate returns " , needsEvalUpdate );
 
-        // This prevents the addition of a post_id on a form resubmit!
         if( needsEvalUpdate && cdd_public_lms_evals_ajax_data.evaluated !== 'true' ){
 
             const raw_id = $( '.frm_forms' ).attr( 'id' );

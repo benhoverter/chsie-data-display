@@ -553,7 +553,7 @@ if ( !class_exists( 'WeDevs_Settings_API' ) ):
                 <?php } ?>
             </div>
             <?php
-            $this->script();
+            //$this->script();
         }
 
         /**

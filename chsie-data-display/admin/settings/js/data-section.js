@@ -1,17 +1,17 @@
 /**
- * JS for: admin/module/views/view-name.php.
+ * JS for: admin/module/views/data-section.php.
  *
  * @link       https://github.com/benhoverter/chsie-data-display
  * @since      1.0.0
  *
  * @package    chsie-data-display
- * @subpackage chsie-data-display/admin/module/js
+ * @subpackage chsie-data-display/admin/settings/js
  */
 
  (function( $ ) {
      'use strict';
 
-    $(document).ready( function() {
+    $( function() {
         console.log( "Settings data-section.js loaded." );
 
         // ***** FUNCTION DEFINITIONS ***** //
