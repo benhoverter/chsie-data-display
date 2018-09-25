@@ -284,7 +284,7 @@ class CHSIE_Data_Display {
         $lms_evals_ajax = new CDD_Public_LMS_Evals_Ajax( $this->get_plugin_title(), $this->get_version() );
 
         // Standard hooks go here:
-        $this->loader->add_action( 'wp_head', $lms_evals_ajax, 'echo_eval_settings' );
+        $this->loader->add_action( 'wp_footer', $lms_evals_ajax, 'echo_eval_settings' );
 
         // Data to frontend here with wp_localize_script():
         $this->loader->add_action( 'wp_enqueue_scripts', $lms_evals_ajax, 'set_lms_evals_ajax_data' );
